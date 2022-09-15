@@ -44,13 +44,11 @@ Route::group(['middleware'=>'auth','prefix' =>'dashboard'], function () {
     Route::get('all-users', [ViewController::class,'view_all_users'])->name('view_all_users');
 
     Route::get('all-time-trackers-report', [ViewController::class,'view_all_time_trackers_report'])->name('view_all_time_trackers_report');
-
-
+    Route::get('view-user-profile', [ViewController::class,'view_user_profile'])->name('view_user_profile');
 
     //Employee Routes 
     Route::post('profile_document_add',[EmployeeController::class,'profile_document_add'])->name('profile_document_add');
     Route::get('single_profile_document_delete/{id}',[EmployeeController::class,'single_profile_document_delete'])->name('single_profile_document_delete');
-
 
     Route::get('create-employee-profile',[EmployeeController::class,'create_employee_profile'])->name('create_employee_profile');
     Route::get('edit-employee-profile/{id}',[EmployeeController::class,'edit_employee_profile'])->name('edit_employee_profile');
@@ -64,18 +62,13 @@ Route::group(['middleware'=>'auth','prefix' =>'dashboard'], function () {
     Route::get('add-work-location',[AdminController::class,'add_work_location'])->name('add_work_location');
     Route::post('store-work-location',[AdminController::class,'store_work_location'])->name('store_work_location');
 
-    Route::get('profile', [DashboardController::class,'profile'])->name('profile');
-    
     // Route::post('add-profile',[DashboardController::class,'store_profile_data'])->name('user_profile_add');
     
-
-
     //Time Tracker Routes
     Route::get('time_tracker_delete/{id}',[TimeTrackerController::class,'delete_single_time_tracker'])->name('single_time_tracker_delete');
     Route::post('time_tracker_start',[TimeTrackerController::class,'time_tracker_start'])->name('time_tracker_start');
     Route::post('time_tracker_stop',[TimeTrackerController::class,'time_tracker_stop'])->name('time_tracker_stop');
     Route::post('time_tracker_report_filter',[TimeTrackerController::class,'time_tracker_report_filter'])->name('time_tracker_report_filter');
-
 
     //Task Routes
     Route::post('create-task',[TaskController::class,'create_task'])->name('create_task');
@@ -109,15 +102,13 @@ Route::group(['middleware'=>'auth','prefix' =>'dashboard'], function () {
     Route::post('action_calender',[ProjectController::class,'action_calender'])->name('action_calender');
     Route::get('project_event_delete/{id}',[ProjectController::class,'delete_single_project_event'])->name('single_project_event_delete');
 
-
     //User
     Route::post('change_password-user',[UserController::class,'change_password_user_data'])->name('user_change_password');
+    Route::post('change-password-from-user-profile',[UserController::class,'change_password_from_user_profile'])->name('change_password_from_user_profile');
     Route::get('delete-user/{id}',[UserController::class,'delete_user'])->name('delete_user');
     Route::get('create-user',[UserController::class,'create_user'])->name('create_user');
     Route::post('store-user-data',[UserController::class,'store_user_data'])->name('store_user_data');
     Route::get('edit-user/{id}',[UserController::class,'edit_user'])->name('edit_user');
-
-
 
 });
 

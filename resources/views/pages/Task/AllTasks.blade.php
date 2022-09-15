@@ -92,7 +92,7 @@ use App\Http\Controllers\DashboardController;
                             <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-sm text-gray-500 font-medium ">
                                 Assign To <span class="text-red-700">*</span> </span>
                             <select class="test form-select appearance-none block lg:w-40 xl:w-60 md:w-40 sm:w-full w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border-none rounded transition ease-in-out m-0 mt-1 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="assign_to[]" id="assign_to" multiple="multiple">
-                                <option value="">Select Assign To</option>
+                                <option value="" disabled>Select Assign To</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                                 @endforeach
@@ -250,7 +250,6 @@ use App\Http\Controllers\DashboardController;
                                 {
                                     $Start_Time ="";
                                     $start_t ='0';
-
                                 }
                                 $StopTime=$task->stop_time;
                                 if($StopTime!="" && $StopTime!="NULL" && $StopTime!="0000-00-00 00:00:00")
@@ -262,7 +261,6 @@ use App\Http\Controllers\DashboardController;
                                 {
                                     $Stop_Time ="";
                                     $stop_t ='0';
-
                                 }
                                 $start = strtotime($start_t);
                                 $end = strtotime($stop_t);

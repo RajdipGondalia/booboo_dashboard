@@ -152,6 +152,7 @@ class ViewController extends Controller
     }
 
     public function view_all_tasks(){
+        \DB::connection()->enableQueryLog();
         $current_user = Auth::user()->name;
         $login_user_id = auth()->user()->id;
         $login_user_type = auth()->user()->type;
@@ -162,11 +163,15 @@ class ViewController extends Controller
         }
         else
         {
-            // $tasks = Task::where('isDelete', '=', 0)->where('user_id', '=', $login_user_id)->orderBy('id',"DESC")->get();
-            $tasks = Task::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
-
+            // $tasks = Task::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
+            $tasks = Task::where('isDelete', '=', 0)
+            ->where('user_id', '=', $login_user_id)
+            ->orwhereRaw('find_in_set("'.$login_user_id.'",assign_to)')
+            ->orderBy('id',"DESC")
+            ->get();
+            // $queries = \DB::getQueryLog();
         }
-
+        // dd($queries);
         // $single_start_trackers = TimeTracker::where('user_id', '=', $user_id)->where('id', '<', $id)->where('flag', '=', "start")->orderBy('id',"DESC")->first();
 
         $users = User::where('isDelete', '=', 0)->get();
@@ -229,10 +234,20 @@ class ViewController extends Controller
         $login_user_id = auth()->user()->id;
         $login_user_type = auth()->user()->type;
 
-        $users = User::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
+        $users = User::where('isDelete', '=', 0)->orderBy('name',"ASC")->get();
         $total_user = User::where('isDelete', '=', 0)->count();
         
         return view('pages.User.AllUsers')->with(['users'=>$users,'current_user'=>$current_user,'total_user'=>$total_user]);
+
+    }
+    public function view_user_profile(){
+        $current_user = Auth::user()->name;
+        $login_user_id = auth()->user()->id;
+        $login_user_type = auth()->user()->type;
+
+        $users = User::where('isDelete', '=', 0)->where('id', '=', $login_user_id)->orderBy('id',"DESC")->get();
+        
+        return view('pages.User.UserProfile')->with(['users'=>$users,'current_user'=>$current_user]);
 
     }
     

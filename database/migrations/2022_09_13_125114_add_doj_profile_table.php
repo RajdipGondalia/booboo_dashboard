@@ -14,7 +14,6 @@ return new class extends Migration
     public function up()
     {
         //
-        
         Schema::table('profile', function (Blueprint $table) {
             $table->date('doj')->nullable()->after('skills');
             $table->date('dol')->nullable()->after('doj');

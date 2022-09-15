@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
+use DB;
 
 class UserController extends Controller
 {
@@ -32,6 +34,18 @@ class UserController extends Controller
         
         if($request->mode === 'add')
         {
+            // For Generate User code start
+            $curr_year = Carbon::now()->format('y');
+            $curr_month = Carbon::now()->format('m');
+            
+            $data = User::latest('id')->first();
+            $pre_user_id = $data->id;
+            $curr_user_id = $pre_user_id+1;
+
+            $user_str = str_pad($curr_user_id, 3, '0', STR_PAD_LEFT);
+            $user_code = $curr_year.$curr_month.$user_str;
+            // For Generate User code end
+
             $validated = $request->validate([
                 'type' => ['required'],
                 'name' => ['required', 'string', 'max:255'],
@@ -40,6 +54,7 @@ class UserController extends Controller
             ]);
 
             $user = new User;
+            $user->user_code = $user_code;
             $user->type = $request->type;
             $user->name = $request->name;
             $user->email = $request->email;
@@ -93,6 +108,37 @@ class UserController extends Controller
                 Session('message',$message);
             }
         }
+        else if($request->mode === 'change_user_photo')
+    	{
+            // dd($request);
+            $validated = $request->validate([
+                    'image_path' => ['required'],
+                ],
+                [ 'image_path.required' => 'Please Choose Image first..!!']
+            );
+
+            $user_id = $request->user_id;
+            $user = User::find($user_id);
+            
+           
+            if($request->image_path!=null && $request->image_path!="null")
+            {
+                $imageName = $request->name.'_'.time().'.'.$request->image_path->extension();
+                // move Public Folder
+                $request->image_path->move(public_path('images/user'), $imageName);
+                // dd($imageName);
+
+                $user->image_path = $imageName;
+            }
+
+            $user->save();
+            if($user){
+                return redirect()->route('view_user_profile');
+            }else{
+                $message = 'Data not Saved';
+                Session('message',$message);
+            }
+        }
     }
     public function delete_user($id){
         $user = User::find($id);
@@ -108,7 +154,7 @@ class UserController extends Controller
             Session('message',$message);
         }  
     }
-
+    
     public function change_password_user_data(Request $request){
         // dd($request->all());
         // dd($request->image_path);
@@ -138,5 +184,33 @@ class UserController extends Controller
             Session('message',$errors);
         }   
     }
+    public function change_password_from_user_profile(Request $request){
+        // dd($request->all());
+        // dd($request->image_path);
+        $user_id = $request->user_id;
+
+        $validated = $request->validate([
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+
+        if($validated){
+            $user = User::find($user_id);
+
+            $user->password = Hash::make($request->password);
     
+            //Remaining attributes
+            $user->save();
+            if($user){
+                return redirect()->route('view_user_profile');
+            }else{
+                $message = 'Data not Saved';
+                Session('message',$message);
+            }   
+        }
+        else{
+            $errors = $validated->errors();
+            Session('message',$errors);
+        }   
+    }
 }

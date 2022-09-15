@@ -176,11 +176,11 @@
                                 $user_name = $project_comment->user_details->name;
                                 if($image_path!="" && $image_path!="null" )
                                 {
-                                    $image = asset('images/user')."/".$image_path; 
+                                    $image = asset('images/user')."/".$image_path;
                                 }
                                 else
                                 {
-                                    $image = asset('images/user')."/default.png";
+                                    $image = asset('images')."/default.png";
                                 }
                             @endphp
                             @if($login_user_id != $project_comment->user_id)
@@ -223,7 +223,7 @@
                                     </div>
                                 </div>
                             @else       
-                                <div class="employee-input-card p-2 md:p-2 h-16 mt-10 text-center rounded-2xl self-start w-full float-right">
+                                <div class="employee-input-card p-2 md:p-2 h-16 mt-10 text-center rounded-2xl self-start w-full ">
                                     <div className="flex-row flex float-right" style="display:inline-flex;float:right;">
                                         <div class="flex flex-col ">
                                             @if($project_comment->comment!="" && $project_comment->comment!="null")

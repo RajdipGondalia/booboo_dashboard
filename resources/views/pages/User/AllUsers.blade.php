@@ -50,7 +50,7 @@
           <table class="table table-striped project-list-table">
               <thead>
                   <tr class="">
-                      <th class="text-neutral-400 p-1 font-semibold text-sm text-center">Sr.No.</th>
+                      <th class="text-neutral-400 p-1 font-semibold text-sm text-center"></th>
                       <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Type</th>
                       <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Name</th>
                       <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Email</th>
@@ -73,7 +73,8 @@
                       }
                   @endphp
                   <tr class="bg-white" >
-                      <td class="text-sm font-semibold p-2 text-center">{{++$count}}</td>
+                      <!-- <td class="text-sm font-semibold p-2 text-center">{{++$count}}</td> -->
+                      <td class="text-neutral-400 font-semibold p-1 text-center">#{{$user->user_code}}</td>
                       <td class="text-sm font-semibold p-2 text-left">
                         @php
                             $TypeArray = array(0=>"","1"=>"Admin","2"=>"Senior Employee","3"=>"Employee");
