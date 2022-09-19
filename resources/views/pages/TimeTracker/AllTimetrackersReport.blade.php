@@ -62,7 +62,9 @@
         </form>
         <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-sm text-gray-500 font-medium ">Total Present Days : <b> {{$total_present_day}}</b></span> 
         @php
-          $TimeDiff = gmdate("H:i:s", $total_seconds);
+
+          $TimeDiff1 = gmdate("H:i:s", $total_seconds);
+
           $days = floor($total_seconds/86400);
           $hours = floor(($total_seconds - $days*86400) / 3600);
           $minutes = floor(($total_seconds / 60) % 60);
@@ -71,7 +73,7 @@
           $real_present_day = ($total_seconds/28800);
           $real_present_days = round($real_present_day, 2);
         @endphp
-        <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-sm text-gray-500 font-medium ">Total Time : <b> {{$TimeDiff}}</b></span> 
+        <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-sm text-gray-500 font-medium ">Total Time : <b> {{$TimeDiff1}}</b></span> 
         <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-sm text-gray-500 font-medium ">Total Present Days calculate with Time (1 Day = 8 Hours) : <b> {{$real_present_days}}</b></span> 
       </div>
     </div>

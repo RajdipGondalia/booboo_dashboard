@@ -77,6 +77,8 @@ class TimeTrackerController extends Controller
         $filter_end_date = $request->filter_end_date;
         $filter_end_date_plus = date('Y-m-d', strtotime($filter_end_date . ' +1 day'));
 
+        $TotalSecondsDiff =0;
+        $SecondsDiff=0;
         if($filter_user_id!=0 && $filter_user_id!="" && $filter_start_date!="" && $filter_end_date!="" )
         {
             $datewise_time_trackers = DB::select( DB::raw("Select  *,count(*) , DATE_FORMAT(`current_time`,'%Y-%m-%d') as Created_at_date  FROM time_tracker WHERE user_id='".$filter_user_id."' AND isDelete=0 AND `current_time` > '".$filter_start_date."' AND `current_time` < '".$filter_end_date_plus."' GROUP BY Created_at_date ORDER BY id DESC") );
@@ -89,8 +91,7 @@ class TimeTrackerController extends Controller
 
             // cal. sec. logic start
             $single_time_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $filter_user_id)->whereDate('current_time', '>=', $filter_start_date)->whereDate('current_time', '<=', $filter_end_date)->get();
-            $TotalSecondsDiff =0;
-            $SecondsDiff=0;
+            
             foreach($single_time_trackers as $day_time)
             {
                 $flag = $day_time->flag;
@@ -102,6 +103,7 @@ class TimeTrackerController extends Controller
                 // }
                 if($flag=="stop")
                 {
+                    
                     $single_start_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $filter_user_id)->where('id', '<', $id)->where('flag', '=', "start")->orderBy('id',"DESC")->first();
                     // dd($single_start_trackers);
                     // dd($id);
@@ -131,8 +133,7 @@ class TimeTrackerController extends Controller
 
             // cal sec. logic start
             $single_time_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $login_user_id)->get();
-            $TotalSecondsDiff =0;
-            $SecondsDiff=0;
+            
             foreach($single_time_trackers as $day_time)
             {
                 $flag = $day_time->flag;
