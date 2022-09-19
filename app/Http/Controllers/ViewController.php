@@ -55,6 +55,10 @@ class ViewController extends Controller
         {
             $time_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $login_user_id)->orderBy('id',"DESC")->get(); 
         }
+        $datewise_time_trackers = DB::select( DB::raw("Select  *,count(*) , DATE_FORMAT(`current_time`,'%Y-%m-%d') as Created_at_date  FROM time_tracker WHERE user_id='".$login_user_id."' AND isDelete=0 GROUP BY Created_at_date ORDER BY id DESC") );
+        // $datewise_time_trackers = \DB::getQueryLog();
+        // dd($datewise_time_trackers);
+
         $today = date("Y-m-d");
             
         $single_time_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $login_user_id)->whereDate('current_time', '=', $today)->get();
@@ -98,7 +102,7 @@ class ViewController extends Controller
         {
             $user_last_flag = "";
         }
-        return view('pages.TimeTracker.AllTimetrackers')->with(['time_trackers'=>$time_trackers,'total_minutes'=>$TotalMinutesDiff,'total_seconds'=>$TotalSecondsDiff,'user_last_flag'=>$user_last_flag,'current_user'=>$current_user]);
+        return view('pages.TimeTracker.AllTimetrackers')->with(['time_trackers'=>$time_trackers,'total_minutes'=>$TotalMinutesDiff,'total_seconds'=>$TotalSecondsDiff,'user_last_flag'=>$user_last_flag,'current_user'=>$current_user,'datewise_time_trackers'=>$datewise_time_trackers]);
 
     }
 
@@ -108,15 +112,17 @@ class ViewController extends Controller
         $login_user_type = auth()->user()->type;
         $users = User::where('isDelete', '=', 0)->get();
 
-        $time_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $login_user_id)->orderBy('id',"DESC")->get();
+        $time_trackers = TimeTracker::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
+        // $time_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $login_user_id)->orderBy('id',"DESC")->get();
 
         // present day logic start
-        $total_present_dayArray = DB::select( DB::raw("Select count(*), DATE_FORMAT(Created_At,'%Y-%m-%d') as Created_Day1 FROM time_tracker WHERE user_id = '".$login_user_id."'  AND isDelete=0 GROUP BY Created_Day1") );
+        $total_present_dayArray = DB::select( DB::raw("Select count(*), DATE_FORMAT(`current_time`,'%Y-%m-%d') as Created_Day1 FROM time_tracker WHERE user_id = '".$login_user_id."'  AND isDelete=0 GROUP BY Created_Day1") );
         $total_present_day = sizeof($total_present_dayArray);
         // present day logic end
 
         // cal sec. logic start
         $single_time_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $login_user_id)->get();
+        // $single_time_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $login_user_id)->get();
         $TotalSecondsDiff =0;
         $SecondsDiff=0;
         foreach($single_time_trackers as $day_time)
@@ -141,13 +147,11 @@ class ViewController extends Controller
                 // dd($start);
                 $stop = strtotime($stop_time);
                 $SecondsDiff = abs($stop-$start);
-
                 $TotalSecondsDiff += $SecondsDiff;
             }
         }
         // cal sec. logic end
-
-        return view('pages.TimeTracker.AllTimetrackersReport')->with(['time_trackers'=>$time_trackers,'current_user'=>$current_user,'users'=>$users,'filter_user_id'=>"",'filter_start_date'=>"",'filter_end_date'=>"",'total_present_day'=>$total_present_day,'total_seconds'=>$TotalSecondsDiff]);
+        return view('pages.TimeTracker.AllTimetrackersReport')->with(['time_trackers'=>$time_trackers,'current_user'=>$current_user,'users'=>$users,'filter_user_id'=>"",'filter_start_date'=>"",'filter_end_date'=>"",'total_present_day'=>"-",'total_seconds'=>"0",'view_mode'=>"all_users"]);
 
     }
 

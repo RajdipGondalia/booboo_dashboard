@@ -87,51 +87,147 @@
         <table class="table table-striped">
           <thead>
             <tr class="border-b-2 border-b-red-200">
-              @if((Auth::user()->type==1 || Auth::user()->type==2 ))
-                <th class="text-neutral-400 p-1 font-semibold text-sm text-center">Action</th>
+              @if((Auth::user()->type==1 || Auth::user()->type==2 ) && $view_mode=="all_users")
+                <th class="text-neutral-400 p-1 font-semibold text-sm text-center"></th>
               @endif
               <th class="text-neutral-400 p-1 font-semibold text-sm text-center">Sr. No.</th>
-              <th class="text-neutral-400 p-1 font-semibold text-sm text-center">Start/Stop</th>
               <th class="text-neutral-400 p-4 font-semibold text-sm text-center">Date & Time</th>
+              <th class="text-neutral-400 p-1 font-semibold text-sm text-center">Start/Stop</th>
               <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Person</th>
+              <th class="text-neutral-400 p-1 font-semibold text-sm text-center"></th>
+
             </tr>
           </thead>
           <tbody>
             @php
               $count = 0
+              
+              
             @endphp
-            @foreach($time_trackers as $time_tracker)
+            @if($view_mode=="all_users")
+              @foreach($time_trackers as $time_tracker)
+                @php
+                  $current_time = date("d-m-Y h:i:s A",strtotime($time_tracker->current_time));
+                @endphp
+                <tr class="border-t-orange-300 border-b-2 border-b-zinc-200">
+                  @if((Auth::user()->type==1 || Auth::user()->type==2 ))
+                    <td class="text-sm font-bold text-center">
+                      <a onclick="return confirm('Are you sure Delete This Time Tracker..?')"  href="{{ route('single_time_tracker_delete', $time_tracker->id) }}" title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
+                        <i class="fa fa-trash-o"></i>
+                      </a>
+                    </td>
+                  @endif
+                  <td class="text-sm font-bold text-center">{{++$count}}</td>
+                  <td class="text-sm font-bold text-center">{{$current_time}}</td>
+                  <td class="text-sm font-bold text-center">{{$time_tracker->flag}}</td>
+
+                  @php
+                    $user_image_path = $time_tracker->user_name->image_path;
+                    if($user_image_path!="" && $user_image_path!="null" )
+                    {
+                      $UserImage = asset('images/user')."/".$user_image_path;
+                    }
+                    else
+                    {
+                      $UserImage = asset('images')."/default.png";
+                    }
+                  @endphp
+                  <td class="flex flex-row text-sm font-bold text-left">
+                    <img src="{{$UserImage}}" class="rounded-full task-user-image mt-2"></img>
+                    <span class="text-sm font-bold py-2 self-center ml-2">{{$time_tracker->user_name->name}}</span>
+                  </td>
+                </tr>
+              @endforeach
+            @elseif($view_mode=="filter_user")
+            @foreach($datewise_time_trackers as $datewise_time_tracker)
               @php
-                $current_time = date("d-m-Y h:i:s A",strtotime($time_tracker->current_time));
+                $login_user_id = Auth::user()->id;
+                $user_id = $datewise_time_tracker->user_id;
+                $Created_at_date = $datewise_time_tracker->Created_at_date;
+                $Created_at_date_plus = date('Y-m-d', strtotime($Created_at_date . ' +1 day'));
+
+                $datewise_time_tracker_details = DB::select( DB::raw("Select * FROM time_tracker WHERE user_id = '".$user_id."'  AND isDelete=0 AND `current_time` > '".$Created_at_date."' AND `current_time` < '".$Created_at_date_plus."' ORDER BY id ASC") );
+                $user_details = DB::select( DB::raw("Select * FROM users WHERE id = '".$user_id."'  AND isDelete=0 ") );
+                
+                
+                $Created_at_date = date("d-m-Y",strtotime($datewise_time_tracker->Created_at_date));
+
               @endphp
               <tr class="border-t-orange-300 border-b-2 border-b-zinc-200">
-                @if((Auth::user()->type==1 || Auth::user()->type==2 ))
-                  <td class="text-sm font-bold text-center">
-                    <a onclick="return confirm('Are you sure Delete This Time Tracker..?')"  href="{{ route('single_time_tracker_delete', $time_tracker->id) }}" title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
-                      <i class="fa fa-trash-o"></i>
-                    </a>
-                  </td>
-                @endif
                 <td class="text-sm font-bold text-center">{{++$count}}</td>
-                <td class="text-sm font-bold text-center">{{$time_tracker->flag}}</td>
-                <td class="text-sm font-bold text-center">{{$current_time}}</td>
+                <td class="text-sm font-bold text-center">{{$Created_at_date}}</td>
+
+                
+                <td class="text-sm font-bold text-center">
                 @php
-                  $user_image_path = $time_tracker->user_name->image_path;
+                  $TotalSecondsDiff =0;
+                @endphp
+                @foreach($datewise_time_tracker_details as $datewise_time_tracker_detail)
+                  @if($datewise_time_tracker_detail->flag == "start")
+                    @php
+                    $start_curr_time = date("h:i:s A",strtotime($datewise_time_tracker_detail->current_time));
+                    @endphp
+                    <span style="color: green;" >Start : {{$start_curr_time}}</span>&nbsp;&nbsp;
+                  @elseif($datewise_time_tracker_detail->flag == "stop")
+                    @php
+                      $SecondsDiff=0;
+                      $stop_curr_time = date("h:i:s A",strtotime($datewise_time_tracker_detail->current_time));
+
+                      $id =$datewise_time_tracker_detail->id;
+                      $time_tracker_start = DB::select( DB::raw("Select * FROM time_tracker WHERE `id` < '".$id."' AND `flag` = 'start'  AND isDelete=0 ORDER BY id DESC LIMIT 1") );
+                      
+                      $start_time = $time_tracker_start[0]->current_time;
+                      $stop_time = $datewise_time_tracker_detail->current_time;
+
+                      $start = strtotime($start_time);
+                      $stop = strtotime($stop_time);
+                      $SecondsDiff = abs($stop-$start);
+
+                      $TotalSecondsDiff += $SecondsDiff;
+
+                      $d_days = floor($SecondsDiff/86400);
+                      $d_hours = floor(($SecondsDiff - $d_days*86400) / 3600);
+                      $d_minutes = floor(($SecondsDiff / 60) % 60);
+                      $d_seconds = floor($SecondsDiff % 60);
+                    @endphp
+                      <span style="color: red;" >Stop : {{$stop_curr_time}}</span>&nbsp;&nbsp;
+                      <span  class="text-neutral-400 p-1 font-semibold text-sm ">{{$d_hours}}:{{$d_minutes}}:{{$d_seconds}}</span>
+                      <br>
+                    @else
+                      <span></span>
+                  @endif
+                @endforeach
+                </td>
+
+                <td class="flex flex-row text-sm font-bold text-left">
+                @foreach($user_details as $user_detail)
+                  @php
+                  $user_image_path = $user_detail->image_path;
                   if($user_image_path!="" && $user_image_path!="null" )
                   {
-                    $UserImage = asset('images/user')."/".$user_image_path;
+                      $UserImage = asset('images/user')."/".$user_image_path;
                   }
                   else
                   {
-                    $UserImage = asset('images')."/default.png";
+                      $UserImage = asset('images')."/default.png";
                   }
-                @endphp
-                <td class="flex flex-row text-sm font-bold text-left">
+                  @endphp
                   <img src="{{$UserImage}}"  class="rounded-full task-user-image mt-2"></img>
-                  <span class="text-sm font-bold py-2 self-center ml-2">{{$time_tracker->user_name->name}}</span>
+                  <span class="text-sm font-bold py-2 self-center ml-2">{{$user_detail->name}}</span>
+                @endforeach
+                </td>
+                @php
+                  $t_days = floor($TotalSecondsDiff/86400);
+                  $t_hours = floor(($TotalSecondsDiff - $t_days*86400) / 3600);
+                  $t_minutes = floor(($TotalSecondsDiff / 60) % 60);
+                  $t_seconds = floor($TotalSecondsDiff % 60);
+                @endphp
+                <td class="text-neutral-400 p-1 font-semibold text-sm text-center">
+                  {{$t_hours}}:{{$t_minutes}}:{{$t_seconds}}
                 </td>
               </tr>
             @endforeach
+            @endif
           </tbody>
         </table>
 

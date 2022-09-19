@@ -79,6 +79,9 @@ class TimeTrackerController extends Controller
 
         if($filter_user_id!=0 && $filter_user_id!="" && $filter_start_date!="" && $filter_end_date!="" )
         {
+            $datewise_time_trackers = DB::select( DB::raw("Select  *,count(*) , DATE_FORMAT(`current_time`,'%Y-%m-%d') as Created_at_date  FROM time_tracker WHERE user_id='".$filter_user_id."' AND isDelete=0 AND `current_time` > '".$filter_start_date."' AND `current_time` < '".$filter_end_date_plus."' GROUP BY Created_at_date ORDER BY id DESC") );
+
+
             $time_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $filter_user_id)->whereDate('current_time', '>=', $filter_start_date)->whereDate('current_time', '<=', $filter_end_date)->orderBy('id',"DESC")->get();
             $total_present_dayArray = DB::select( DB::raw("Select count(*), DATE_FORMAT(Created_At,'%Y-%m-%d') as Created_Day1 FROM time_tracker WHERE user_id = '".$filter_user_id."' AND isDelete=0 AND `current_time` > '".$filter_start_date."' AND `current_time` < '".$filter_end_date_plus."'  GROUP BY Created_Day1") );
             // dd($total_present_dayArray);
@@ -118,6 +121,8 @@ class TimeTrackerController extends Controller
         }
         else
         {
+            $datewise_time_trackers = DB::select( DB::raw("Select  *,count(*) , DATE_FORMAT(`current_time`,'%Y-%m-%d') as Created_at_date  FROM time_tracker WHERE user_id='".$login_user_id."' AND isDelete=0  GROUP BY Created_at_date ORDER BY id DESC") );
+
             $time_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $login_user_id)->orderBy('id',"DESC")->get();
 
             $total_present_dayArray = DB::select( DB::raw("Select count(*), DATE_FORMAT(Created_At,'%Y-%m-%d') as Created_Day1 FROM time_tracker WHERE user_id = '".$login_user_id."'  AND isDelete=0 GROUP BY Created_Day1") );
@@ -157,6 +162,6 @@ class TimeTrackerController extends Controller
             // cal sec. logic end
         }
         // $filter_end_date = date('Y-m-d', strtotime($filter_end_date . ' -1 day'));
-        return view('pages.TimeTracker.AllTimetrackersReport')->with(['time_trackers'=>$time_trackers,'current_user'=>$current_user,'users'=>$users,'filter_user_id'=>$filter_user_id,'filter_start_date'=>$filter_start_date,'filter_end_date'=>$filter_end_date,'total_present_day'=>$total_present_day,'total_seconds'=>$TotalSecondsDiff]);
+        return view('pages.TimeTracker.AllTimetrackersReport')->with(['time_trackers'=>$time_trackers,'current_user'=>$current_user,'users'=>$users,'filter_user_id'=>$filter_user_id,'filter_start_date'=>$filter_start_date,'filter_end_date'=>$filter_end_date,'total_present_day'=>$total_present_day,'total_seconds'=>$TotalSecondsDiff,'view_mode'=>"filter_user",'datewise_time_trackers'=>$datewise_time_trackers]);
     }
 }
