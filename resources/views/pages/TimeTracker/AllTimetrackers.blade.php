@@ -22,12 +22,13 @@
             <span class="text-md font-bold self-center">{{date("d-m-Y")}}</span>
             <span class="text-md self-center font-bold">Today's Total Time</span>
             @php
-              $days = floor($total_seconds/86400);
-              $hours = floor(($total_seconds - $days*86400) / 3600);
-              $minutes = floor(($total_seconds / 60) % 60);
-              $seconds = floor($total_seconds % 60);
+                $TimeDiff = gmdate("H:i:s", $total_seconds);
+                $days = floor($total_seconds/86400);
+                $hours = floor(($total_seconds - $days*86400) / 3600);
+                $minutes = floor(($total_seconds / 60) % 60);
+                $seconds = floor($total_seconds % 60);
             @endphp
-            <span class="text-4xl text-emerald-600 font-bold">{{$hours}}:{{$minutes}}:{{$seconds}}</span>
+            <span class="text-4xl text-emerald-600 font-bold">{{$TimeDiff}}</span>
 
             @if($user_last_flag=="stop")
               <button type="button" class="text-white  text-center w-20 self-end text-xs font-normal px-2 py-2 rounded-lg" style="background-color:green;" id="TimeStart">Start</button>
@@ -105,10 +106,13 @@
                                 
                                 $start_time = $time_tracker_start[0]->current_time;
                                 $stop_time = $datewise_time_tracker_detail->current_time;
+                                
 
                                 $start = strtotime($start_time);
                                 $stop = strtotime($stop_time);
                                 $SecondsDiff = abs($stop-$start);
+                                $d_TimeDiff = gmdate("H:i:s", $SecondsDiff);
+
 
                                 $TotalSecondsDiff += $SecondsDiff;
 
@@ -118,7 +122,7 @@
                                 $d_seconds = floor($SecondsDiff % 60);
                             @endphp
                                 <span style="color: red;" >Stop : {{$stop_curr_time}}</span>&nbsp;&nbsp;
-                                <span  class="text-neutral-400 p-1 font-semibold text-sm ">{{$d_hours}}:{{$d_minutes}}:{{$d_seconds}}</span>
+                                <span  class="text-neutral-400 p-1 font-semibold text-sm ">{{$d_TimeDiff}}</span>
                                 <br>
 
                             @else
@@ -145,13 +149,14 @@
                     @endforeach
                     </td>
                     @php
+                        $t_TimeDiff = gmdate("H:i:s", $TotalSecondsDiff);
                         $t_days = floor($TotalSecondsDiff/86400);
                         $t_hours = floor(($TotalSecondsDiff - $t_days*86400) / 3600);
                         $t_minutes = floor(($TotalSecondsDiff / 60) % 60);
                         $t_seconds = floor($TotalSecondsDiff % 60);
                     @endphp
                     <td class="text-neutral-400 p-1 font-semibold text-sm text-center">
-                        {{$t_hours}}:{{$t_minutes}}:{{$t_seconds}}
+                        {{$t_TimeDiff}}
                     </td>
                 </tr>
             @endforeach

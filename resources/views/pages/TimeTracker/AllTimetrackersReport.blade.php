@@ -62,6 +62,7 @@
         </form>
         <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-sm text-gray-500 font-medium ">Total Present Days : <b> {{$total_present_day}}</b></span> 
         @php
+          $TimeDiff = gmdate("H:i:s", $total_seconds);
           $days = floor($total_seconds/86400);
           $hours = floor(($total_seconds - $days*86400) / 3600);
           $minutes = floor(($total_seconds / 60) % 60);
@@ -70,7 +71,7 @@
           $real_present_day = ($total_seconds/28800);
           $real_present_days = round($real_present_day, 2);
         @endphp
-        <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-sm text-gray-500 font-medium ">Total Time : <b> {{$hours}}:{{$minutes}}:{{$seconds}}</b></span> 
+        <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-sm text-gray-500 font-medium ">Total Time : <b> {{$TimeDiff}}</b></span> 
         <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-sm text-gray-500 font-medium ">Total Present Days calculate with Time (1 Day = 8 Hours) : <b> {{$real_present_days}}</b></span> 
       </div>
     </div>
@@ -185,13 +186,14 @@
 
                       $TotalSecondsDiff += $SecondsDiff;
 
+                      $d_TimeDiff = gmdate("H:i:s", $SecondsDiff);
                       $d_days = floor($SecondsDiff/86400);
                       $d_hours = floor(($SecondsDiff - $d_days*86400) / 3600);
                       $d_minutes = floor(($SecondsDiff / 60) % 60);
                       $d_seconds = floor($SecondsDiff % 60);
                     @endphp
                       <span style="color: red;" >Stop : {{$stop_curr_time}}</span>&nbsp;&nbsp;
-                      <span  class="text-neutral-400 p-1 font-semibold text-sm ">{{$d_hours}}:{{$d_minutes}}:{{$d_seconds}}</span>
+                      <span  class="text-neutral-400 p-1 font-semibold text-sm ">{{$d_TimeDiff}}</span>
                       <br>
                     @else
                       <span></span>
@@ -217,13 +219,14 @@
                 @endforeach
                 </td>
                 @php
+                  $t_TimeDiff = gmdate("H:i:s", $TotalSecondsDiff);
                   $t_days = floor($TotalSecondsDiff/86400);
                   $t_hours = floor(($TotalSecondsDiff - $t_days*86400) / 3600);
                   $t_minutes = floor(($TotalSecondsDiff / 60) % 60);
                   $t_seconds = floor($TotalSecondsDiff % 60);
                 @endphp
                 <td class="text-neutral-400 p-1 font-semibold text-sm text-center">
-                  {{$t_hours}}:{{$t_minutes}}:{{$t_seconds}}
+                  {{$t_TimeDiff}}
                 </td>
               </tr>
             @endforeach
