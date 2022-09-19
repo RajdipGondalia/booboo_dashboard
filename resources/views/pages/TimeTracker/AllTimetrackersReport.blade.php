@@ -140,96 +140,96 @@
                 </tr>
               @endforeach
             @elseif($view_mode=="filter_user")
-            @foreach($datewise_time_trackers as $datewise_time_tracker)
-              @php
-                $login_user_id = Auth::user()->id;
-                $user_id = $datewise_time_tracker->user_id;
-                $Created_at_date = $datewise_time_tracker->Created_at_date;
-                $Created_at_date_plus = date('Y-m-d', strtotime($Created_at_date . ' +1 day'));
-
-                $datewise_time_tracker_details = DB::select( DB::raw("Select * FROM time_tracker WHERE user_id = '".$user_id."'  AND isDelete=0 AND `current_time` > '".$Created_at_date."' AND `current_time` < '".$Created_at_date_plus."' ORDER BY id ASC") );
-                $user_details = DB::select( DB::raw("Select * FROM users WHERE id = '".$user_id."'  AND isDelete=0 ") );
-                
-                
-                $Created_at_date = date("d-m-Y",strtotime($datewise_time_tracker->Created_at_date));
-
-              @endphp
-              <tr class="border-t-orange-300 border-b-2 border-b-zinc-200">
-                <td class="text-sm font-bold text-center">{{++$count}}</td>
-                <td class="text-sm font-bold text-center">{{$Created_at_date}}</td>
-
-                
-                <td class="text-sm font-bold text-center">
+              @foreach($datewise_time_trackers as $datewise_time_tracker)
                 @php
-                  $TotalSecondsDiff =0;
+                  $login_user_id = Auth::user()->id;
+                  $user_id = $datewise_time_tracker->user_id;
+                  $Created_at_date = $datewise_time_tracker->Created_at_date;
+                  $Created_at_date_plus = date('Y-m-d', strtotime($Created_at_date . ' +1 day'));
+
+                  $datewise_time_tracker_details = DB::select( DB::raw("Select * FROM time_tracker WHERE user_id = '".$user_id."'  AND isDelete=0 AND `current_time` > '".$Created_at_date."' AND `current_time` < '".$Created_at_date_plus."' ORDER BY id ASC") );
+                  $user_details = DB::select( DB::raw("Select * FROM users WHERE id = '".$user_id."'  AND isDelete=0 ") );
+                  
+                  
+                  $Created_at_date = date("d-m-Y",strtotime($datewise_time_tracker->Created_at_date));
+
                 @endphp
-                @foreach($datewise_time_tracker_details as $datewise_time_tracker_detail)
-                  @if($datewise_time_tracker_detail->flag == "start")
-                    @php
-                    $start_curr_time = date("h:i:s A",strtotime($datewise_time_tracker_detail->current_time));
-                    @endphp
-                    <span style="color: green;" >Start : {{$start_curr_time}}</span>&nbsp;&nbsp;
-                  @elseif($datewise_time_tracker_detail->flag == "stop")
-                    @php
-                      $SecondsDiff=0;
-                      $stop_curr_time = date("h:i:s A",strtotime($datewise_time_tracker_detail->current_time));
+                <tr class="border-t-orange-300 border-b-2 border-b-zinc-200">
+                  <td class="text-sm font-bold text-center">{{++$count}}</td>
+                  <td class="text-sm font-bold text-center">{{$Created_at_date}}</td>
 
-                      $id =$datewise_time_tracker_detail->id;
-                      $time_tracker_start = DB::select( DB::raw("Select * FROM time_tracker WHERE `id` < '".$id."' AND `flag` = 'start'  AND isDelete=0 ORDER BY id DESC LIMIT 1") );
-                      
-                      $start_time = $time_tracker_start[0]->current_time;
-                      $stop_time = $datewise_time_tracker_detail->current_time;
-
-                      $start = strtotime($start_time);
-                      $stop = strtotime($stop_time);
-                      $SecondsDiff = abs($stop-$start);
-
-                      $TotalSecondsDiff += $SecondsDiff;
-
-                      $d_TimeDiff = gmdate("H:i:s", $SecondsDiff);
-                      $d_days = floor($SecondsDiff/86400);
-                      $d_hours = floor(($SecondsDiff - $d_days*86400) / 3600);
-                      $d_minutes = floor(($SecondsDiff / 60) % 60);
-                      $d_seconds = floor($SecondsDiff % 60);
-                    @endphp
-                      <span style="color: red;" >Stop : {{$stop_curr_time}}</span>&nbsp;&nbsp;
-                      <span  class="text-neutral-400 p-1 font-semibold text-sm ">{{$d_TimeDiff}}</span>
-                      <br>
-                    @else
-                      <span></span>
-                  @endif
-                @endforeach
-                </td>
-
-                <td class="flex flex-row text-sm font-bold text-left">
-                @foreach($user_details as $user_detail)
+                  
+                  <td class="text-sm font-bold text-center">
                   @php
-                  $user_image_path = $user_detail->image_path;
-                  if($user_image_path!="" && $user_image_path!="null" )
-                  {
-                      $UserImage = asset('images/user')."/".$user_image_path;
-                  }
-                  else
-                  {
-                      $UserImage = asset('images')."/default.png";
-                  }
+                    $TotalSecondsDiff =0;
                   @endphp
-                  <img src="{{$UserImage}}"  class="rounded-full task-user-image mt-2"></img>
-                  <span class="text-sm font-bold py-2 self-center ml-2">{{$user_detail->name}}</span>
-                @endforeach
-                </td>
-                @php
-                  $t_TimeDiff = gmdate("H:i:s", $TotalSecondsDiff);
-                  $t_days = floor($TotalSecondsDiff/86400);
-                  $t_hours = floor(($TotalSecondsDiff - $t_days*86400) / 3600);
-                  $t_minutes = floor(($TotalSecondsDiff / 60) % 60);
-                  $t_seconds = floor($TotalSecondsDiff % 60);
-                @endphp
-                <td class="text-neutral-400 p-1 font-semibold text-sm text-center">
-                  {{$t_TimeDiff}}
-                </td>
-              </tr>
-            @endforeach
+                  @foreach($datewise_time_tracker_details as $datewise_time_tracker_detail)
+                    @if($datewise_time_tracker_detail->flag == "start")
+                      @php
+                      $start_curr_time = date("h:i:s A",strtotime($datewise_time_tracker_detail->current_time));
+                      @endphp
+                      <span style="color: green;" >Start : {{$start_curr_time}}</span>&nbsp;&nbsp;
+                    @elseif($datewise_time_tracker_detail->flag == "stop")
+                      @php
+                        $SecondsDiff=0;
+                        $stop_curr_time = date("h:i:s A",strtotime($datewise_time_tracker_detail->current_time));
+
+                        $id =$datewise_time_tracker_detail->id;
+                        $time_tracker_start = DB::select( DB::raw("Select * FROM time_tracker WHERE `id` < '".$id."' AND `flag` = 'start'  AND isDelete=0 AND user_id = '".$user_id."' AND `current_time` > '".$Created_at_date."' AND `current_time` < '".$Created_at_date_plus."' ORDER BY id DESC LIMIT 1") );
+                        
+                        $start_time = $time_tracker_start[0]->current_time;
+                        $stop_time = $datewise_time_tracker_detail->current_time;
+
+                        $start = strtotime($start_time);
+                        $stop = strtotime($stop_time);
+                        $SecondsDiff = abs($stop-$start);
+
+                        $TotalSecondsDiff += $SecondsDiff;
+
+                        $d_TimeDiff = gmdate("H:i:s", $SecondsDiff);
+                        $d_days = floor($SecondsDiff/86400);
+                        $d_hours = floor(($SecondsDiff - $d_days*86400) / 3600);
+                        $d_minutes = floor(($SecondsDiff / 60) % 60);
+                        $d_seconds = floor($SecondsDiff % 60);
+                      @endphp
+                        <span style="color: red;" >Stop : {{$stop_curr_time}}</span>&nbsp;&nbsp;
+                        <span  class="text-neutral-400 p-1 font-semibold text-sm ">{{$d_TimeDiff}}</span>
+                        <br>
+                      @else
+                        <span></span>
+                    @endif
+                  @endforeach
+                  </td>
+
+                  <td class="flex flex-row text-sm font-bold text-left">
+                  @foreach($user_details as $user_detail)
+                    @php
+                    $user_image_path = $user_detail->image_path;
+                    if($user_image_path!="" && $user_image_path!="null" )
+                    {
+                        $UserImage = asset('images/user')."/".$user_image_path;
+                    }
+                    else
+                    {
+                        $UserImage = asset('images')."/default.png";
+                    }
+                    @endphp
+                    <img src="{{$UserImage}}"  class="rounded-full task-user-image mt-2"></img>
+                    <span class="text-sm font-bold py-2 self-center ml-2">{{$user_detail->name}}</span>
+                  @endforeach
+                  </td>
+                  @php
+                    $t_TimeDiff = gmdate("H:i:s", $TotalSecondsDiff);
+                    $t_days = floor($TotalSecondsDiff/86400);
+                    $t_hours = floor(($TotalSecondsDiff - $t_days*86400) / 3600);
+                    $t_minutes = floor(($TotalSecondsDiff / 60) % 60);
+                    $t_seconds = floor($TotalSecondsDiff % 60);
+                  @endphp
+                  <td class="text-neutral-400 p-1 font-semibold text-sm text-center">
+                    {{$t_TimeDiff}}
+                  </td>
+                </tr>
+              @endforeach
             @endif
           </tbody>
         </table>
