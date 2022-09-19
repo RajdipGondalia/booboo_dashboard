@@ -147,7 +147,7 @@
                   $Created_at_date = $datewise_time_tracker->Created_at_date;
                   $Created_at_date_plus = date('Y-m-d', strtotime($Created_at_date . ' +1 day'));
 
-                  $datewise_time_tracker_details = DB::select( DB::raw("Select * FROM time_tracker WHERE user_id = '".$user_id."'  AND isDelete=0 AND `current_time` > '".$Created_at_date."' AND `current_time` < '".$Created_at_date_plus."' ORDER BY id ASC") );
+                  $datewise_time_tracker_details = DB::select( DB::raw("Select * FROM time_tracker WHERE user_id = '".$user_id."'  AND isDelete=0  ORDER BY id ASC") );
                   $user_details = DB::select( DB::raw("Select * FROM users WHERE id = '".$user_id."'  AND isDelete=0 ") );
                   
                   
