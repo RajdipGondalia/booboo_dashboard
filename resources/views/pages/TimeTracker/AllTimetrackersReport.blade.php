@@ -65,10 +65,10 @@
 
           $TimeDiff1 = gmdate("H:i:s", $total_seconds);
 
-          $days = floor($total_seconds/86400);
-          $hours = floor(($total_seconds - $days*86400) / 3600);
+
+          $hours = floor($total_seconds / 3600);
           $minutes = floor(($total_seconds / 60) % 60);
-          $seconds = floor($total_seconds % 60);
+          $seconds = $total_seconds % 60;
 
           $real_present_day = ($total_seconds/28800);
           $real_present_days = round($real_present_day, 2);
