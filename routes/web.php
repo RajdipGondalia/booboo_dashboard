@@ -24,9 +24,13 @@ use App\Http\Controllers\UserController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+/*
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('index');
+});*/
+
+Route::get('/', [ViewController::class,'index'])->name('dashboard');
+
 // Route::get('employee_details', function () {
 //     return view('employee_details');
 // })->name('employee_details');
