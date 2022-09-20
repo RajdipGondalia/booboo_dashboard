@@ -125,7 +125,7 @@
                                     @endphp
                                     <tr class="bg-red-100 rounded-lg">
                                         <td class="text-sm font-semibold p-2 text-center">{{++$count}}</td>
-                                        <td class="text-sm font-semibold p-2 text-left">{{$project_comments_attachment->attachment_path}}</td>
+                                        <td class="text-sm font-semibold p-2 text-left">{{$project_comments_attachment->attachment_realname}}</td>
                                         <td class="text-sm font-semibold p-2 text-left">{{$created_at}}</td>
                                         <td class="text-sm font-semibold p-2 text-left">{{$user_name}}</td>
                                         <td class="text-sm font-semibold p-2 text-left">
@@ -204,7 +204,7 @@
                                             <div class="flex flex-col text-left">
                                                 <span class="self-start text-xs font-semibold ml-4">{{$user_name}}</span>
                                                 <p class="text-xs font-normal bg-gray-100 p-2 m-2 rounded-tl-none rounded-tr-xl rounded-bl-xl rounded-br-xl">
-                                                    File Name : {{$project_comment->attachment_path}}
+                                                    <span>File Name : {{$project_comment->attachment_realname}}</span><br>
                                                     <a style="margin-left: 13%;" href="{{asset('images/project_attachment').'/'.$project_comment->attachment_path}}" target="_blank" >
                                                         <i class="fa fa-eye"></i>
                                                     </a>
@@ -240,7 +240,7 @@
                                             @elseif($project_comment->attachment_path!="" && $project_comment->attachment_path!="null")
                                                 <span class="self-end text-xs font-bold mr-4">{{$user_name}}</span>
                                                 <p class="text-xs font-normal bg-red-500 p-2 m-2 text-white rounded-tl-xl rounded-tr-none rounded-bl-xl rounded-br-xl">
-                                                    File Name : {{$project_comment->attachment_path}}
+                                                <span>File Name : {{$project_comment->attachment_realname}}</span><br>
                                                     
                                                     <a style="margin-left: 13%;" href="{{asset('images/project_attachment').'/'.$project_comment->attachment_path}}" target="_blank" >
                                                         <i class="fa fa-eye"></i>

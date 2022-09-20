@@ -14,6 +14,7 @@
     <meta name="google-website-verification" content="key">
     <title>Employee Management Dashboard</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
     <!-- <script src="{{ asset('js/app.js') }}" defer></script>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
     

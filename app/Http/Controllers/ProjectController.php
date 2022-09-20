@@ -257,10 +257,12 @@ class ProjectController extends Controller
 
         if($request->attachment_path!="" && $request->attachment_path!="null")
         {
+            $attachmentRealName = $request->attachment_path->getClientOriginalName();
             $attachmentName = $user_name.'_'.time().'.'.$request->attachment_path->extension();
             // move Public Folder
             $request->attachment_path->move(public_path('images/project_attachment'), $attachmentName);
             $project_comment->attachment_path = $attachmentName;
+            $project_comment->attachment_realname = $attachmentRealName;
         }
 
         $validated = $request->validate([
