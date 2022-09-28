@@ -12,6 +12,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LeaveController;
 
 
 /*
@@ -28,6 +29,23 @@ use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return view('index');
 });*/
+Route::get('detect-device', function () {
+
+    // object
+    $agent = new \Jenssegers\Agent\Agent;
+
+    // laptop/desktop
+    $result1 = $agent->isDesktop();
+
+    // mobile
+    $result2 = $agent->isMobile();
+
+    // tablet
+    $result3 = $agent->isTablet();
+
+    // returns boolean value of each variable
+    echo $result1." , ".$result2. " , ".$result3; 
+});
 
 Route::get('/', [ViewController::class,'index'])->name('dashboard');
 
@@ -46,6 +64,7 @@ Route::group(['middleware'=>'auth','prefix' =>'dashboard'], function () {
     Route::get('all-clients', [ViewController::class,'view_all_clients'])->name('view_all_clients');
     Route::get('all-projects', [ViewController::class,'view_all_projects'])->name('view_all_projects');
     Route::get('all-users', [ViewController::class,'view_all_users'])->name('view_all_users');
+    Route::get('all-leaves', [ViewController::class,'view_all_leaves'])->name('view_all_leaves');
 
     Route::get('all-time-trackers-report', [ViewController::class,'view_all_time_trackers_report'])->name('view_all_time_trackers_report');
     Route::get('view-user-profile', [ViewController::class,'view_user_profile'])->name('view_user_profile');
@@ -59,6 +78,10 @@ Route::group(['middleware'=>'auth','prefix' =>'dashboard'], function () {
     Route::get('delete-employee-profile/{id}',[EmployeeController::class,'delete_employee_profile'])->name('delete_employee_profile');
     Route::post('store-profile-data',[EmployeeController::class,'store_profile_data'])->name('store_profile_data');
     Route::get('get-single-employee/{id}',[EmployeeController::class,'get_single_employee'])->name('api_single_employee');
+
+    //Job Role Routes 
+    Route::get('create-job-role',[EmployeeController::class,'create_job_role'])->name('create_job_role');
+    Route::post('store-jobrole-data',[EmployeeController::class,'store_jobrole_data'])->name('store_jobrole_data');
 
     //Admin Routes
     Route::get('add-job-role',[AdminController::class,'add_job_role'])->name('add_job_role');
@@ -111,8 +134,17 @@ Route::group(['middleware'=>'auth','prefix' =>'dashboard'], function () {
     Route::post('change-password-from-user-profile',[UserController::class,'change_password_from_user_profile'])->name('change_password_from_user_profile');
     Route::get('delete-user/{id}',[UserController::class,'delete_user'])->name('delete_user');
     Route::get('create-user',[UserController::class,'create_user'])->name('create_user');
-    Route::post('store-user-data',[UserController::class,'store_user_data'])->name('store_user_data');
+    Route::post('store-user-data',[UserController::class,'store_user_data'])->name('store_user_data'); 
     Route::get('edit-user/{id}',[UserController::class,'edit_user'])->name('edit_user');
+
+    //Leave Request
+    Route::get('create-leave',[LeaveController::class,'create_leave'])->name('create_leave');
+    Route::post('store-leave-data',[LeaveController::class,'store_leave_data'])->name('store_leave_data');
+    Route::get('edit-leave/{id}',[LeaveController::class,'edit_leave'])->name('edit_leave');
+    Route::get('delete-leave/{id}',[LeaveController::class,'delete_leave'])->name('delete_leave');
+    Route::post('leave_approve',[LeaveController::class,'leave_approve'])->name('leave_approve');
+    Route::post('leave_reject',[LeaveController::class,'leave_reject'])->name('leave_reject');
+    Route::post('leave_cancel',[LeaveController::class,'leave_cancel'])->name('leave_cancel');
 
 });
 

@@ -67,7 +67,7 @@
                   $count = 0
                 @endphp
                 @foreach($projects as $project)
-                <tr class="bg-white">
+                <tr class="bg-white align-top">
                     <td class="text-sm font-semibold p-2 text-center"><a href="{{ route('project_details', $project->id) }}" >{{++$count}}</a></td>
                     <td class="text-sm font-semibold p-2 text-left">{{$project->title}}</td>
                     <td class="text-sm font-semibold p-2 text-left">

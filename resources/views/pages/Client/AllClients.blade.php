@@ -65,7 +65,7 @@
                     $count = 0
                 @endphp
                 @foreach($clients as $client)
-                <tr class="bg-white">
+                <tr class="bg-white align-top">
                   <td class="text-sm font-semibold p-2 text-center">{{++$count}}</td>
                   <td class="text-sm font-semibold p-2 text-left">{{ $client->company_name }}</td>
                   <td class="text-sm font-semibold p-2 text-left">{{ $client->first_name }}</td>

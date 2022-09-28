@@ -75,7 +75,7 @@
                   $image = asset('images')."/default.png";
                 }
               @endphp
-              <tr class="bg-white">
+              <tr class="bg-white align-top">
                   <td class="text-sm font-semibold p-2 text-center">
                     <a id="employeeDetailsShowButton" data-attr="{{ route('api_single_employee', $employee->id) }}" data-id="{{ $employee->id }}" title="View" style="cursor:pointer;color: blue;"  >
                     <!-- onClick='openEmployeeDetails("{{ $employee->id }}")' -->

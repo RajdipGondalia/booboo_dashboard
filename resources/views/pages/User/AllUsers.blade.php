@@ -72,7 +72,7 @@
                       $image = asset('images')."/default.png";
                       }
                   @endphp
-                  <tr class="bg-white" >
+                  <tr class="bg-white align-top" >
                       <!-- <td class="text-sm font-semibold p-2 text-center">{{++$count}}</td> -->
                       <td class="text-neutral-400 font-semibold p-1 text-center">#{{$user->user_code}}</td>
                       <td class="text-sm font-semibold p-2 text-left">

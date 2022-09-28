@@ -70,7 +70,7 @@
                                     }
                                     $user_name = $project_event->user_details->name;
                                     @endphp
-                                    <tr class="bg-red-100 rounded-lg">
+                                    <tr class="bg-red-100 rounded-lg align-top">
                                         <td class="text-sm font-semibold p-2 text-center">{{++$count}}</td>
                                         <td class="text-sm font-semibold p-2 text-left">{{$project_event->title}}</td>
                                         <td class="text-sm font-semibold p-2 text-left">{{$start_date_time}}</td>
@@ -123,7 +123,7 @@
                                     }
                                     $user_name = $project_comments_attachment->user_details->name;
                                     @endphp
-                                    <tr class="bg-red-100 rounded-lg">
+                                    <tr class="bg-red-100 rounded-lg align-top">
                                         <td class="text-sm font-semibold p-2 text-center">{{++$count}}</td>
                                         <td class="text-sm font-semibold p-2 text-left">{{$project_comments_attachment->attachment_realname}}</td>
                                         <td class="text-sm font-semibold p-2 text-left">{{$created_at}}</td>
@@ -350,7 +350,7 @@
                                     $color="";
                                 }
                             @endphp
-                            <tr style="background-color:{{$color}}" class="border-t-orange-300 border-b-2 border-b-zinc-200">
+                            <tr style="background-color:{{$color}}" class="border-t-orange-300 border-b-2 border-b-zinc-200 align-top">
                                 <td class="text-sm  text-center">{{++$count}}</td>
                                 <td class="text-sm text-left">
                                     @if($task->project_id!=0)
@@ -404,7 +404,7 @@
                                 }
                                 @endphp
                                 <td class="flex flex-row text-sm font-bold text-left">
-                                    <img src="{{$CreatedByUserImage}}"  class="rounded-full task-user-image mt-2"></img>
+                                    <img src="{{$CreatedByUserImage}}" class="rounded-full task-user-image mt-2"></img>
                                     <span class="text-sm font-semibold p-2 self-center ml-2">{{$task->user_name->name}}</span>
                                 </td>
                                 <td class="text-sm  text-left">

@@ -107,8 +107,7 @@ else
                             </label>
                             
                             <label class="block mb-5 self-center w-full">
-                                <span
-                                    class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-xs font-normal">
+                                <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-xs font-normal">
                                     Job Role <span class="text-red-700">*</span>
                                 </span>
                                 <select name="job_role" class="form-select appearance-none block sm:w-full w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-red-100 bg-clip-padding bg-no-repeat border-none rounded transition ease-in-out m-0 mt-1 focus:text-gray-700 focus:bg-white focus:border-red-300 focus:outline-none"
@@ -117,7 +116,10 @@ else
                                     @foreach($job_roles as $job_role)
                                         <option  {{($job_role_id == $job_role->id)?"selected":""}}  value="{{ $job_role->id }}">{{ $job_role->name }}</option>
                                     @endforeach
-                                </select>
+                                </select><br>
+                                @if((Auth::user()->type==1 || Auth::user()->type==2 ))
+                                    <a  href="{{ route('create_job_role') }}"  class="text-white rounded-3xl bg-green-700 text-xs font-semibold px-2 py-2 rounded-lg mt-10" >Add Job Role +</a> 
+                                @endif
                             </label>
 
                             <label class="block mb-5 self-center w-full">
@@ -224,10 +226,10 @@ else
                                     Working Location <span class="text-red-700">*</span>
                                 </span>
                                 <select name="working_location" class="form-select appearance-none block sm:w-full w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-red-100 bg-clip-padding bg-no-repeat border-none rounded transition ease-in-out m-0 mt-1 focus:text-gray-700 focus:bg-white focus:border-red-300 focus:outline-none" aria-label="Default select example">
-                                        <option value="">Select Working Location</option>
-                                        @foreach($working_locations as $working_location)
-                                            <option {{($working_location_id == $working_location->id)?"selected":""}} value="{{ $working_location->id }}">{{ $working_location->name }}</option>
-                                        @endforeach
+                                    <option value="">Select Working Location</option>
+                                    @foreach($working_locations as $working_location)
+                                        <option {{($working_location_id == $working_location->id)?"selected":""}} value="{{ $working_location->id }}">{{ $working_location->name }}</option>
+                                    @endforeach
                                 </select>
                             </label>
                             <label class="block mb-5 self-center w-full">
@@ -243,51 +245,50 @@ else
                     <button type="submit" class="text-white rounded-3xl bg-red-500 text-md font-semibold profile-button px-10 py-2">Save</button>
                 </div>
             </form>
-            @if($mode=="edits")
+            @if($mode=="edit")
                 <div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10 xl:grid xl:grid-cols-2 xl:gap-10 sm:mx-0 xl:mx-0">
                     <div class="p-4 md:p-4 text-center flex flex-col bg-white rounded-2xl">
                         <span class="text-center text-md font-bold">Id & Documents</span>
-                        <form method="POST" enctype="multipart/form-data" >
+                        <form action="{{ route('profile_document_add') }}" method="POST" enctype="multipart/form-data" >
                             @csrf
                             @method('POST')
                             <div class="rounded-none p-4 xl:w-3/5 md:w-3/5 sm:w-full w-full md:p-4 text-center flex flex-col">
                                 <div class="w-full">
                                     <div class="flex flex-row justify-between p-4">
-                                        <select class="form-select appearance-none block lg:w-full xl:w-full md:w-full sm:w-full w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border-none rounded transition ease-in-out m-0 mt-1 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example" name="document_id" id="document_id">
+                                        <select class="form-select appearance-none block lg:w-full xl:w-full md:w-full sm:w-full w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border-none rounded transition ease-in-out m-0 mt-1 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example" name="document_id" id="document_id" required>
                                             <option value="">Select Document Name</option>
                                             <option value="1">Adhar Card</option>
                                             <option value="2">Pan Card</option>
                                             <option value="3">Resume</option>
                                             <option value="4">Offer Latter</option>
                                             <option value="5">Company I-Card</option>
-                                            
                                         </select>
                                         <span style="color:red">@error('document_id'){{$message}}@enderror</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="rounded-none p-4 xl:w-3/5 md:w-3/5 sm:w-full w-full md:p-4 text-center flex flex-col">
+                            <div class="rounded-none p-4 xl:w-5/6 md:w-5/6 sm:w-full w-full md:p-4 text-center flex flex-col">
                                 <div class="w-full">
                                     <div class="flex flex-row justify-between p-4">
                                         <input type="file" id="myFile" name="attachment_path" class="text-xs">
                                         <span style="color:red">@error('attachment_path'){{$message}}@enderror</span>
-                                        <input type="hidden" value="{{$given_name}}" name="profile_name">
+                                        <input type="hidden" value="{{$given_name}}" name="profile_name" required>
                                         <input type="hidden" value="{{$id}}" name="profile_id">
                                         <button class="text-white rounded-3xl float-right bg-green-600 text-xs font-normal px-2 py-2 rounded-lg" type="submit">Add</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
-                        <div class="container px-0 mx-auto flex flex-col xl:flex align">
-                            <div class="fix-width text-left ">
-                                <table class="table  project-list-table table-responsive" style="float: left;height: 400px;overflow-x: hidden;overflow-y: auto; width: 100%;">
+                        <div class="container px-0 mx-auto flex flex-col xl:flex align overflow-y-auto h-full">
+                            <div class="fix-width text-left overflow-y-auto h-full">
+                                <table class="table project-list-table table-responsive" style="float: left;height: 400px;overflow-x: hidden;overflow-y: auto; width: 100%;">
                                     <thead>
                                         <tr>
                                             <th class="text-neutral-400 p-4 font-semibold text-xs text-center">Sr.No.</th>
-                                            <th class="text-neutral-400 p-4 font-semibold text-xs text-center">Document Name</th>
+                                            <th class="text-neutral-400 p-4 font-semibold text-xs text-left">Document Name</th>
                                             <th class="text-neutral-400 p-4 font-semibold text-xs text-left">Add Data & Time</th>
                                             <th class="text-neutral-400 p-4 font-semibold text-xs text-left">Added By</th>
-                                            <th class="text-neutral-400 p-4 font-semibold text-xs text-left">Action</th>
+                                            <th class="text-neutral-400 p-4 font-semibold text-xs text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -318,7 +319,7 @@ else
                                                     <a href="{{asset('images/profile_document').'/'.$profile_document->attachment_path}}" target="_blank" ><i class="fa fa-eye"></i></a>
                                                     <a style="margin-left: 10px;" href="{{asset('images/profile_document').'/'.$profile_document->attachment_path}}" download><i class="fa fa-download"></i></a>
                                                     @if((Auth::user()->type==1 || Auth::user()->type==2 ))
-                                                        <a onclick="return confirm('Are you sure Delete This Profile Document..?')"    title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
+                                                        <a onclick="return confirm('Are you sure Delete This Profile Document..?')" href="{{ route('single_profile_document_delete', $profile_document->id) }}"  title="Delete" style="margin-left: 10px;color: red;text-decoration: none">
                                                             <i class="fa fa-trash-o"></i>
                                                         </a>
                                                     @endif

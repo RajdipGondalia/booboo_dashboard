@@ -99,9 +99,10 @@ use App\Http\Controllers\DashboardController;
                             </select>
                         </div>
                     </div>
+                    
                 </div>
             </div>
-            <div class="mb-10 mt-10 self-center lg:self-center ">
+            <div class="mb-10 mt-10 self-center lg:self-center">
                 <button class="text-white rounded-3xl bg-red-500 text-md font-semibold profile-button px-10 py-2" type="submit">Save</button>
                 <!-- <button type="button" class="rounded-3xl bg-gray-200 text-md font-semibold profile-button px-10 py-2">Cancel</button> -->
             </div>
@@ -164,7 +165,7 @@ use App\Http\Controllers\DashboardController;
                             $color="";
                         }
                         @endphp
-                        <tr style="background-color:{{$color}}" class="border-t-orange-300 border-b-2 border-b-zinc-200">
+                        <tr style="background-color:{{$color}}" class="border-t-orange-300 border-b-2 border-b-zinc-200 align-top">
                             <td class="text-sm  text-center">{{++$count}}</td>
                             <td class="text-sm text-left">
                                 @if($task->project_id!=0)

@@ -57,18 +57,20 @@
     </div> -->
     <!-- Filter End-->
       
-	@foreach($users as $user)
 		@php
-			if($user->image_path!="" && $user->image_path!="null" )
+      $user_image_path = Auth::user()->image_path;
+			if($user_image_path!="" && $user_image_path!="null" )
 			{
-			$image = asset('images/user')."/".$user->image_path;
+			  $image = asset('images/user')."/".$user_image_path;
 			}
 			else
 			{
-			$image = asset('images')."/default.png";
+			  $image = asset('images')."/default.png";
 			}
-			$name = $user->name;
-			$id = $user->id;
+			$name = Auth::user()->name;
+			$id = Auth::user()->id;
+			$type = Auth::user()->type;
+			$email = Auth::user()->email;
 		@endphp
 		<div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10 xl:grid xl:grid-cols-2 xl:gap-10 sm:mx-0 xl:mx-0">
 			
@@ -80,26 +82,26 @@
 				<div class="employee-input-card p-2 md:p-2 h-16 text-center rounded-2xl mt-6 self-start w-full flex flex-row">
 					<div class="flex flex-col ml-4">
 						<p class="self-start text-xs">User Type</p>
-						<p class="self-start font-bold text-md">{{$TypeArray[$user->type]}}</p>
+						<p class="self-start font-bold text-md">{{$TypeArray[$type]}}</p>
 					</div>
 				</div>
 				<div
 					class="employee-input-card p-2 md:p-2 h-16 text-center rounded-2xl mt-6 self-start w-full flex flex-row">
 					<div class="flex flex-col ml-4">
 						<p class="self-start text-xs">Name</p>
-						<p class="self-start font-bold text-md">{{$user->name}}</p>
+						<p class="self-start font-bold text-md">{{$name}}</p>
 					</div>
 				</div>
 				<div
 					class="employee-input-card p-2 md:p-2 h-16 text-center rounded-2xl mt-6 self-start w-full flex flex-row">
 					<div class="flex flex-col ml-4">
 						<p class="self-start text-xs">Email</p>
-						<p class="self-start font-bold text-md">{{$user->email}}</p>
+						<p class="self-start font-bold text-md">{{$email}}</p>
 					</div>
 				</div>
 					@if((Auth::user()->type==1 || Auth::user()->type==2 ))
 						<div class="mb-10 mt-10 self-left lg:self-left flex flex-row"> 
-							<a class="text-white rounded-3xl bg-red-500 text-md font-semibold profile-button px-10 py-2" data-toggle="modal" id="smallButton" data-target="#smallModal" data-id="{{ $user->id }}" title="Change Password" style="margin-left: 10px;cursor:pointer;" onClick='openChangePassword("{{ $user->id }}")' >
+							<a class="text-white rounded-3xl bg-red-500 text-md font-semibold profile-button px-10 py-2" data-toggle="modal" id="smallButton" data-target="#smallModal" data-id="{{ $id }}" title="Change Password" style="margin-left: 10px;cursor:pointer;" onClick='openChangePassword("{{ $id }}")' >
 							<i class="fa fa-key"></i> Change Password
 							</a>
 						</div> 
@@ -112,19 +114,21 @@
 						<!-- <span class="text-left uppercase  text-md pl-10">Profile Image</span> -->
 						<img src="{{$image}}" class="rounded-full " style="width: 350px; height: 350px; margin-left: 0%;" alt="">
 						<span class=" self-left text-red-500 text-xs font-bold pt-2">Change Profile image</span>
-						<input  class=" self-left  text-xs font-bold pt-2 file" type="file" name="image_path" >
-						<div class="mb-10 mt-10 self-left lg:self-left flex flex-row"> 
+						<input  class="form-control " type="file" name="image_path" >
+            @if(Auth::user()->image_path != "")
+              <button class="text-white rounded-3xl bg-neutral-400 text-md font-semibold profile-button px-5 py-2 mt-5" onClick="remove_profile_image({{$id}})"><i class="fa fa-trash"></i> Remove</button>
+            @endif
+						<div class="mb-10 mt-10 self-left lg:self-left flex flex-row image"> 
 							<input type="hidden" name="mode" value="change_user_photo" >
 							<input type="hidden" name="name" value={{$name}} >
 							<input type="hidden" name="user_id" value="{{$id}}" >
-							<button type="submit" class="text-white rounded-3xl bg-red-500 text-md font-semibold profile-button px-10 py-2">Save Profile Photo </button>
+							<button type="submit" class="text-white rounded-3xl bg-red-500 text-md font-semibold profile-button px-10 py-2">Upload Profile Photo </button>
 							<!-- <button type="button" class="rounded-3xl bg-gray-200 text-md font-semibold profile-button px-10 py-2">Cancel</button> -->           
 						</div> 
 					</form>
 				</div>  
 			</div>
 		</div>
-	@endforeach
     
   </section>
   <!-- Change Password modal Start -->
@@ -184,6 +188,27 @@
     }
     function closeClientPopup() {
       document.getElementById("changePasswordModal").style.display = "none";
+    }
+
+    function remove_profile_image(id)
+    {
+        var user_id = `{{Auth::user()->id}}`;
+
+        var url = `{{ route('store_user_data') }}`;
+
+        // console.log("Function called",date);
+        // console.log("Task Id",id);
+        const form_data = new FormData();
+        form_data.append("user_id",user_id);
+        form_data.append("mode","remove_user_photo");
+
+        axios.post(url,form_data).then(response => {
+        
+        console.log(response);
+        location.reload();
+        }).catch(error=>{
+        // console.log(error);
+        });
     }
   </script>
 @endsection

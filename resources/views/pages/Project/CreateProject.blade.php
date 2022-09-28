@@ -1,5 +1,7 @@
 @extends('layouts.master')
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fastselect/0.7.3/fastselect.css" integrity="sha512-ZuEPLe91OwKwGRJvb5mgLZ2jnlixHISbyFRP3MLThF62FACQtdGQJli85riN8dyQWOsMoZiha0B33fm2ewYkEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fastselect/0.7.3/fastselect.js" integrity="sha512-/i9ku6wDB6hJ1h73F9nhr/JrDabgshYBbKWPs6D6xWSuJ7F/P642Ssk66TmbbdEnhAosCeKfEGo3zZyH6t9I8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- Welcome Section-->
 @php
 if($mode=="edit")
@@ -120,7 +122,7 @@ else
                                 <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-sm text-gray-500 font-medium ">
                                     Assign To <span class="text-red-700">*</span> </span>
                                 <select class="test form-select appearance-none block lg:w-40 xl:w-60 md:w-40 sm:w-full w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border-none rounded transition ease-in-out m-0 mt-1 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" name="assign_to[]" id="assign_to" multiple="multiple">
-                                    <option value="">Select Assign To</option>
+                                    <option value="" disabled>Select Assign To</option>
                                     @foreach($users as $user)
                                         <option value="{{ $user->id }}" @if(in_array($user->id,$assign_to_ids)) selected @endif>{{ $user->name }}</option>
                                     @endforeach
@@ -141,5 +143,9 @@ else
         </div>
     </div>
 </section>
+<script>
+    $('#assign_to').fSelect();
+
+</script>
 
 @endsection

@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\ClientMaster;
 use App\Models\ClientCategoryMaster;
 use App\Models\JobRoleMaster;
+use App\Models\leave;
 use DB;
 
 
@@ -20,20 +21,23 @@ class ViewController extends Controller
     public function index(){
         $current_user = Auth::user()->name;
 
+        $total_users_count = User::where('isDelete', '=', 0)->count();
         $total_employees_count = Profile::where('isDelete', '=', 0)->count();
 
         $total_tasks_count = Task::where('isDelete', '=', 0)->count();
         $pending_tasks_count = Task::where('isDelete', '=', 0)->where('status', '=', 0)->count();
-
         $total_projects_count = Project::where('isDelete', '=', 0)->count();
+        $approve_leaves = leave::where('isDelete', '=', 0)->where('status', '=', 1)->orderBy('leave_date_1',"DESC")->get();
+        $pending_leaves = leave::where('isDelete', '=', 0)->where('status', '=', 0)->orderBy('id',"DESC")->get();
 
+        $count['total_users_count'] = $total_users_count;
         $count['total_employees_count'] = $total_employees_count;
         $count['total_tasks_count'] = $total_tasks_count;
         $count['pending_tasks_count'] = $pending_tasks_count;
         $count['total_projects_count'] = $total_projects_count;
         
 
-        return view('pages.dashboard')->with(['count'=>$count,'current_user'=>$current_user]);
+        return view('pages.dashboard')->with(['count'=>$count,'current_user'=>$current_user,'approve_leaves'=>$approve_leaves,'pending_leaves'=>$pending_leaves]);
     }
 
     public function view_all_employees(){
@@ -178,7 +182,7 @@ class ViewController extends Controller
         // dd($queries);
         // $single_start_trackers = TimeTracker::where('user_id', '=', $user_id)->where('id', '<', $id)->where('flag', '=', "start")->orderBy('id',"DESC")->first();
 
-        $users = User::where('isDelete', '=', 0)->get();
+        $users = User::where('isDelete', '=', 0)->orderBy('name',"ASC")->get();
         $projects = Project::where('isDelete', '=', 0)->get();
 
         // foreach($tasks as $task){
@@ -249,12 +253,28 @@ class ViewController extends Controller
         $login_user_id = auth()->user()->id;
         $login_user_type = auth()->user()->type;
 
-        $users = User::where('isDelete', '=', 0)->where('id', '=', $login_user_id)->orderBy('id',"DESC")->get();
+        $users = User::where('isDelete', '=', 0)->where('id', '=', $login_user_id)->orderBy('id',"DESC")->first();
         
         return view('pages.User.UserProfile')->with(['users'=>$users,'current_user'=>$current_user]);
 
     }
-    
 
-    
+    public function view_all_leaves(){
+        $current_user = Auth::user()->name;
+        $login_user_id = auth()->user()->id;
+        $login_user_type = auth()->user()->type;
+
+        if($login_user_type==1 || $login_user_type==2 )
+        {
+            $leaves = leave::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
+        }
+        else
+        {
+            $leaves = leave::where('isDelete', '=', 0)
+            ->where('leave_user_id', '=', $login_user_id)
+            ->orderBy('id',"DESC")
+            ->get();
+        }
+        return view('pages.Leave.AllLeaves')->with(['leaves'=>$leaves,'current_user'=>$current_user]);
+    }
 }

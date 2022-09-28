@@ -17,7 +17,7 @@ class UserController extends Controller
         $current_user = Auth::user()->name;
         $login_user_id = auth()->user()->id;
         $login_user_type = auth()->user()->type;
-        $users = User::where('isDelete', '=', 0)->get();
+        $users = User::where('isDelete', '=', 0)->orderBy('name',"ASC")->get();
         return view('pages.User.CreateUser')->with(['mode'=>"add",'current_user'=>$current_user,'users'=>$users]);
     }
     public function edit_user($id){
@@ -130,6 +130,27 @@ class UserController extends Controller
 
                 $user->image_path = $imageName;
             }
+            else
+            {
+                $user->image_path = "";
+            }
+
+            $user->save();
+            if($user){
+                return redirect()->route('view_user_profile');
+            }else{
+                $message = 'Data not Saved';
+                Session('message',$message);
+            }
+        }
+        else if($request->mode === 'remove_user_photo')
+    	{
+            // dd($request);
+
+            $user_id = $request->user_id;
+            $user = User::find($user_id);
+            
+            $user->image_path = "";
 
             $user->save();
             if($user){

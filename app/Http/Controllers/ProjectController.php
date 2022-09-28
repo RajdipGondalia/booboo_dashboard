@@ -21,8 +21,8 @@ class ProjectController extends Controller
         $login_user_type = auth()->user()->type;
 
         $projects = Project::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
-        $users = User::where('isDelete', '=', 0)->get();
-        $clients = ClientMaster::where('isDelete', '=', 0)->get();
+        $users = User::where('isDelete', '=', 0)->orderBy('name',"ASC")->get();
+        $clients = ClientMaster::where('isDelete', '=', 0)->orderBy('company_name',"ASC")->get();
         return view('pages.Project.CreateProject')->with(['mode'=>"add",'current_user'=>$current_user,'projects'=>$projects,'clients'=>$clients,'users'=>$users]);
     }
     public function edit_project($id){

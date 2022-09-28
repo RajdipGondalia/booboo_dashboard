@@ -13,45 +13,45 @@ use App\Models\ProfileVsDocument;
 class EmployeeController extends Controller
 {
     public function profile_document_add(Request $request){
-        dd($request);
-        $profile_document = new ProfileVsDocument;
-        $profile_document->document_id = $request->document_id;
-        $profile_document->profile_id = $request->profile_id;
-
-        $profile_document->user_id = auth()->user()->id;
-        $profile_name = $request->profile_name;
-
-        if($request->attachment_path!="" && $request->attachment_path!="null")
-        {
-            $attachmentName = $profile_name.'_'.time().'.'.$request->attachment_path->extension();
-            // move Public Folder
-            $request->attachment_path->move(public_path('images/profile_document'), $attachmentName);
-            $profile_document->attachment_path = $attachmentName;
-        }
-
+        // dd($request);
         $validated = $request->validate([
             'document_id' => 'required',
             'attachment_path' => 'required',
         ]);
 
+        $profile_doc = new ProfileVsDocument;
+        $profile_doc->document_id = $request->document_id;
+        $profile_doc->profile_id = $request->profile_id;
+
+        $profile_doc->user_id = auth()->user()->id;
+        $profile_name = $request->profile_name;
+
+        if($request->attachment_path!=null && $request->attachment_path!="null")
+        {
+            $attachmentName = $profile_name.'_'.time().'.'.$request->attachment_path->extension();
+            // move Public Folder
+            $request->attachment_path->move(public_path('images/profile_document'), $attachmentName);
+            $profile_doc->attachment_path = $attachmentName;
+        }
         //Remaining attributes
-        $profile_document->save();
-        if($profile_document){
-            return redirect()->route('edit_employee_profile', $profile_document->profile_id);
+        $profile_doc->save();
+        
+        if($profile_doc){
+            return redirect()->route('edit_employee_profile', $profile_doc->profile_id);
         }else{
             $message = 'Data not Saved';
             Session('message',$message);
         }
     }
-    public function delete_single_profile_document($id){
-        $profile_document = ProfileVsDocument::find($id);
+    public function single_profile_document_delete($id){
+        $profile_doc = ProfileVsDocument::find($id);
 
-        $profile_document->isDelete = 1;
+        $profile_doc->isDelete = 1;
 
-        $profile_document->save();
-        if($profile_document){
+        $profile_doc->save();
+        if($profile_doc){
             // return response()->json('success',200);
-            return redirect()->route('edit_employee_profile', $profile_document->project_id);
+            return redirect()->route('edit_employee_profile', $profile_doc->profile_id);
         }else{
             $message = 'Data not Deleted';
             Session('message',$message);
@@ -172,20 +172,7 @@ class EmployeeController extends Controller
             }
         }
     }
-    public function single_profile_document_delete($id){
-        $profile = Profile::find($id);
-
-        $profile->isDelete = 1;
-
-        $profile->save();
-        if($profile){
-            // return response()->json('success',200);
-            return redirect()->route('view_all_employees');
-        }else{
-            $message = 'Data not Deleted';
-            Session('message',$message);
-        }  
-    }
+    
     public function get_single_employee(Request $request, $id)
     {
         // dd($request);
@@ -242,5 +229,46 @@ class EmployeeController extends Controller
         return response()->json(['employee'=>$data],200);
         // return response()->json(['employee'=>$employee],200);
     }
-    
+    public function create_job_role(){
+        $current_user = Auth::user()->name;
+
+        return view('pages.JobRole.CreateJobRole')->with(['mode'=>"add",'current_user'=>$current_user]);
+    }
+    public function store_jobrole_data(Request $request)
+    {
+
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
+        if($request->mode === 'add')
+        {
+            $job_role = new JobRoleMaster;
+            $job_role->name = $request->name;
+        
+            $job_role->save();
+
+            if($job_role){
+                return redirect()->route('create_employee_profile');
+            }else{
+                $message = 'Data not Saved';
+                Session('message',$message);
+            }
+        }
+        else if($request->mode === 'edit')
+    	{
+            // dd($request);
+            $job_role_id = $request->job_role_id;
+            $job_role = JobRoleMaster::find($job_role_id);
+
+            $job_role->name = $request->name;
+            $job_role->save();
+
+            if($job_role){
+                return redirect()->route('create_employee_profile');
+            }else{
+                $message = 'Data not Saved';
+                Session('message',$message);
+            }
+        }
+    }
 }

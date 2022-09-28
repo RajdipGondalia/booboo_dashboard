@@ -81,7 +81,7 @@
                     $Created_at_date = date("d-m-Y",strtotime($datewise_time_tracker->Created_at_date));
 
                 @endphp
-                <tr class="border-t-orange-300 border-b-2 border-b-zinc-200">
+                <tr class="border-t-orange-300 border-b-2 border-b-zinc-200 align-top">
                     <td class="text-sm font-bold text-center">{{++$count}}</td>
                     <td class="text-sm font-bold text-center">{{$Created_at_date}}</td>
 

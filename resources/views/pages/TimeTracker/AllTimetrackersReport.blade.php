@@ -70,11 +70,11 @@
           $minutes = floor(($total_seconds / 60) % 60);
           $seconds = $total_seconds % 60;
 
-          $real_present_day = ($total_seconds/28800);
+          $real_present_day = ($total_seconds/32400);
           $real_present_days = round($real_present_day, 2);
         @endphp
         <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-sm text-gray-500 font-medium ">Total Time : <b> {{$hours}}:{{$minutes}}:{{$seconds}}</b></span> 
-        <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-sm text-gray-500 font-medium ">Total Present Days calculate with Time (1 Day = 8 Hours) : <b> {{$real_present_days}}</b></span> 
+        <span class="after:content-[''] after:ml-0.5 after:text-red-500 block text-left text-sm text-gray-500 font-medium ">Total Present Days calculate with Time (1 Day = 9 Hours) : <b> {{$real_present_days}}</b></span> 
       </div>
     </div>
   </section>
@@ -112,7 +112,7 @@
                 @php
                   $current_time = date("d-m-Y h:i:s A",strtotime($time_tracker->current_time));
                 @endphp
-                <tr class="border-t-orange-300 border-b-2 border-b-zinc-200">
+                <tr class="border-t-orange-300 border-b-2 border-b-zinc-200 align-top">
                   @if((Auth::user()->type==1 || Auth::user()->type==2 ))
                     <td class="text-sm font-bold text-center">
                       <a onclick="return confirm('Are you sure Delete This Time Tracker..?')"  href="{{ route('single_time_tracker_delete', $time_tracker->id) }}" title="Delete" style="margin-left: 10px;color: red;text-decoration: none" >
