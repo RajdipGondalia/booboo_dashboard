@@ -70,7 +70,7 @@
                         <a onclick="menuChange('wallet-change')" id="Button2"
                             class="flex items-center text-md py-4 px-6 h-10 overflow-hidden text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                             href="{{ route('view_all_projects') }}" data-mdb-ripple="true" data-mdb-ripple-color="dark">
-                            <img src="{{ asset('theme/images/projects.png') }}" height="18" width="18" class="mr-2"
+                            <img src="{{ asset('theme/images/Projects-list.png') }}" height="18" width="18" class="mr-2"
                                 alt="">
                             <span class="active:text-orange-600">Projects</span>
                         </a>
