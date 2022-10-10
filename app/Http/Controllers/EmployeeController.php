@@ -67,7 +67,7 @@ class EmployeeController extends Controller
         $current_user = Auth::user()->name;
 
         $employees = Profile::where('isDelete', '=', 0)->get();  
-        $job_roles = JobRoleMaster::where('isDelete', '=', 0)->get();
+        $job_roles = JobRoleMaster::where('isDelete', '=', 0)->orderBy('name',"ASC")->get();
         $working_locations = WorkingLocationMaster::where('isDelete', '=', 0)->get();
         return view('pages.Employee.CreateProfile')->with(['mode'=>"add",'current_user'=>$current_user,'employees'=>$employees,'job_roles'=>$job_roles,'working_locations'=>$working_locations]);
     }
@@ -77,7 +77,7 @@ class EmployeeController extends Controller
         $current_user = Auth::user()->name;
 
         $employees = Profile::where('isDelete', '=', 0)->get();  
-        $job_roles = JobRoleMaster::where('isDelete', '=', 0)->get();
+        $job_roles = JobRoleMaster::where('isDelete', '=', 0)->orderBy('name',"ASC")->get();
         $working_locations = WorkingLocationMaster::where('isDelete', '=', 0)->get();
         $profile_documents = ProfileVsDocument::where('isDelete', '=', 0)->where('profile_id', '=', $id)->where('attachment_path', '!=', "")->where('attachment_path', '!=', "null")->orderBy('id',"DESC")->get();
         return view('pages.Employee.CreateProfile')->with(['mode'=>"edit",'profile'=>$profile,'current_user'=>$current_user,'employees'=>$employees,'job_roles'=>$job_roles,'working_locations'=>$working_locations,'profile_documents'=>$profile_documents]);

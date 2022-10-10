@@ -90,6 +90,9 @@
                   </td>  
                 </tr>
                 @endforeach
+                <div class="pt-5 pl-5 pr-5">
+                    {{$clients->links()}}
+                </div>
             </tbody>
         </table>
       </div>

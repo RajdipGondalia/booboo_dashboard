@@ -127,16 +127,16 @@ use App\Http\Controllers\DashboardController;
             <table class="table table-striped">
                 <thead>
                     <tr class="border-b-2 border-b-red-200">
-                        <th class="text-neutral-400 p-1 font-semibold text-sm text-center">Sr. No.</th>
-                        <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Project</th>
-                        <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Task</th>
-                        <th class="text-neutral-400 p-4 font-semibold text-sm text-center">Task Assign To</th>
-                        <th class="text-neutral-400 p-4 font-semibold text-sm text-center">Priority</th>
-                        <th class="text-neutral-400 p-4 font-semibold text-sm text-center">Due Date</th>
-                        <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Task Created By</th>
-                        <th class="text-neutral-400 p-4 font-semibold text-sm text-left">Status</th>
-                        <th class="text-neutral-400 p-4 font-semibold text-sm text-left">details</th>
-                        <th class="text-neutral-400 p-1 font-semibold text-sm text-left"></th>
+                        <th class="text-neutral-400 p-1 font-semibold text-sm text-center w-1/12">Sr. No.</th>
+                        <th class="text-neutral-400 p-4 font-semibold text-sm text-left w-1/12">Project</th>
+                        <th class="text-neutral-400 p-4 font-semibold text-sm text-left w-2/12">Task</th>
+                        <th class="text-neutral-400 p-4 font-semibold text-sm text-left w-2/12">Task Assign To</th>
+                        <th class="text-neutral-400 p-4 font-semibold text-sm text-left w-1/12">Priority</th>
+                        <th class="text-neutral-400 p-4 font-semibold text-sm text-left w-1/12">Due Date</th>
+                        <th class="text-neutral-400 p-4 font-semibold text-sm text-left w-2/12">Task Created By</th>
+                        <th class="text-neutral-400 p-4 font-semibold text-sm text-left w-1/12">Status</th>
+                        <th class="text-neutral-400 p-4 font-semibold text-sm text-left w-2/12">details</th>
+                        <th class="text-neutral-400 p-1 font-semibold text-sm text-center w-1/12"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -206,13 +206,13 @@ use App\Http\Controllers\DashboardController;
                                     <br>
                                 @endforeach
                             </td>
-                            <td class="text-sm  text-center">
+                            <td class="text-sm  text-left">
                                 @php
                                     $PriorityArray = array("0"=>"","1"=>"Low","2"=>"Medium","3"=>"High");
                                 @endphp
                                 {{$PriorityArray[$task->priority]}}
                             </td>
-                            <td class="text-sm  text-center">
+                            <td class="text-sm  text-left">
                                 @php
                                 $duedate=$task->due_date;
                                 if($duedate!="" && $duedate!="NULL" && $duedate!="0000-00-00"  && $duedate!="1970-01-01")
@@ -320,6 +320,9 @@ use App\Http\Controllers\DashboardController;
                             </td>  
                         </tr>
                     @endforeach
+                    <div class="pt-5 pl-5 pr-5">
+                        {{$tasks->links()}}
+                    </div>
                 </tbody>
             </table>
 

@@ -19,6 +19,7 @@ use DB;
 class ViewController extends Controller
 {
     public function index(){
+        // \DB::connection()->enableQueryLog();
         $current_user = Auth::user()->name;
 
         $total_users_count = User::where('isDelete', '=', 0)->count();
@@ -27,8 +28,16 @@ class ViewController extends Controller
         $total_tasks_count = Task::where('isDelete', '=', 0)->count();
         $pending_tasks_count = Task::where('isDelete', '=', 0)->where('status', '=', 0)->count();
         $total_projects_count = Project::where('isDelete', '=', 0)->count();
-        $approve_leaves = leave::where('isDelete', '=', 0)->where('status', '=', 1)->orderBy('leave_date_1',"DESC")->get();
+
+        $today = date('Y-m-d h:i:s');
+        $show_start_date = date('Y-m-d h:i:s', strtotime($today . ' -30 day'));
+        $show_end_date = date('Y-m-d h:i:s', strtotime($today . ' +30 day'));
+        
+
+        $approve_leaves = leave::where('isDelete', '=', 0)->where('status', '=', 1)->whereDate('created_at', '>=', $show_start_date)->whereDate('created_at', '<=', $show_end_date)->orderBy('leave_date_1',"DESC")->get();
         $pending_leaves = leave::where('isDelete', '=', 0)->where('status', '=', 0)->orderBy('id',"DESC")->get();
+        // $approve_leaves = \DB::getQueryLog();
+        // dd($approve_leaves);
 
         $count['total_users_count'] = $total_users_count;
         $count['total_employees_count'] = $total_employees_count;
@@ -41,7 +50,9 @@ class ViewController extends Controller
     }
 
     public function view_all_employees(){
-        $employees = Profile::where('isDelete', '=', 0)->get();   
+        // $employees = Profile::where('isDelete', '=', 0)->get();   
+        $employees = Profile::where('isDelete', '=', 0)->paginate(500);   
+        
         $current_user = Auth::user()->name;
         $total_employee = Profile::where('isDelete', '=', 0)->count();
         return view('pages.Employee.AllEmployees')->with(['employees'=>$employees,'current_user'=>$current_user,'total_employee'=>$total_employee]);
@@ -60,6 +71,7 @@ class ViewController extends Controller
             $time_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $login_user_id)->orderBy('id',"DESC")->get(); 
         }
         $datewise_time_trackers = DB::select( DB::raw("Select  *,count(*) , DATE_FORMAT(`current_time`,'%Y-%m-%d') as Created_at_date  FROM time_tracker WHERE user_id='".$login_user_id."' AND isDelete=0 GROUP BY Created_at_date ORDER BY id DESC") );
+        
         // $datewise_time_trackers = \DB::getQueryLog();
         // dd($datewise_time_trackers);
 
@@ -79,7 +91,7 @@ class ViewController extends Controller
             // }
             if($flag=="stop")
             {
-                $single_start_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $login_user_id)->where('id', '<', $id)->where('flag', '=', "start")->orderBy('id',"DESC")->first();
+                $single_start_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $login_user_id)->where('id', '<', $id)->where('flag', '=', "start")->orderBy('id',"DESC")->first(); 
                 // dd($single_start_trackers);
                 // dd($id);
                 $start_time=$single_start_trackers->current_time;
@@ -116,7 +128,7 @@ class ViewController extends Controller
         $login_user_type = auth()->user()->type;
         $users = User::where('isDelete', '=', 0)->get();
 
-        $time_trackers = TimeTracker::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
+        $time_trackers = TimeTracker::where('isDelete', '=', 0)->orderBy('id',"DESC")->paginate(500);
         // $time_trackers = TimeTracker::where('isDelete', '=', 0)->where('user_id', '=', $login_user_id)->orderBy('id',"DESC")->get();
 
         // present day logic start
@@ -167,7 +179,8 @@ class ViewController extends Controller
 
         if($login_user_type==1 || $login_user_type==2 )
         {
-            $tasks = Task::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
+            // $tasks = Task::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
+            $tasks = Task::where('isDelete', '=', 0)->orderBy('id',"DESC")->paginate(500);
         }
         else
         {
@@ -176,7 +189,7 @@ class ViewController extends Controller
             ->where('user_id', '=', $login_user_id)
             ->orwhereRaw('find_in_set("'.$login_user_id.'",assign_to)')
             ->orderBy('id',"DESC")
-            ->get();
+            ->paginate(500);
             // $queries = \DB::getQueryLog();
         }
         // dd($queries);
@@ -213,7 +226,8 @@ class ViewController extends Controller
         $login_user_id = auth()->user()->id;
         $login_user_type = auth()->user()->type;
 
-        $clients = ClientMaster::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
+        // $clients = ClientMaster::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
+        $clients = ClientMaster::where('isDelete', '=', 0)->orderBy('id',"DESC")->paginate(500);
         $total_client = ClientMaster::where('isDelete', '=', 0)->count();
 
         $users = User::where('isDelete', '=', 0)->get();
@@ -227,7 +241,8 @@ class ViewController extends Controller
         $login_user_id = auth()->user()->id;
         $login_user_type = auth()->user()->type;
 
-        $projects = Project::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
+        // $projects = Project::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
+        $projects = Project::where('isDelete', '=', 0)->orderBy('id',"DESC")->paginate(500);
         $total_project = Project::where('isDelete', '=', 0)->count();
         
         $users = User::where('isDelete', '=', 0)->get();
@@ -241,8 +256,9 @@ class ViewController extends Controller
         $current_user = Auth::user()->name;
         $login_user_id = auth()->user()->id;
         $login_user_type = auth()->user()->type;
-
-        $users = User::where('isDelete', '=', 0)->orderBy('name',"ASC")->get();
+        
+        // $users = User::where('isDelete', '=', 0)->orderBy('name',"ASC")->get();
+        $users = User::where('isDelete', '=', 0)->orderBy('name',"ASC")->paginate(500);  
         $total_user = User::where('isDelete', '=', 0)->count();
         
         return view('pages.User.AllUsers')->with(['users'=>$users,'current_user'=>$current_user,'total_user'=>$total_user]);
@@ -263,17 +279,18 @@ class ViewController extends Controller
         $current_user = Auth::user()->name;
         $login_user_id = auth()->user()->id;
         $login_user_type = auth()->user()->type;
-
+        
         if($login_user_type==1 || $login_user_type==2 )
         {
-            $leaves = leave::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
+            // $leaves = leave::where('isDelete', '=', 0)->orderBy('id',"DESC")->get();
+            $leaves = leave::where('isDelete', '=', 0)->orderBy('id',"DESC")->paginate(500);
         }
         else
         {
             $leaves = leave::where('isDelete', '=', 0)
             ->where('leave_user_id', '=', $login_user_id)
             ->orderBy('id',"DESC")
-            ->get();
+            ->paginate(500);
         }
         return view('pages.Leave.AllLeaves')->with(['leaves'=>$leaves,'current_user'=>$current_user]);
     }

@@ -12,5 +12,6 @@ class TimeTracker extends Model
     use HasFactory;
     public function user_name(){
         return $this->belongsTo(User::class,'user_id');
+        
     }
 }

@@ -179,6 +179,7 @@
                         {
                             $CreatedByUserImage = asset('images')."/default.png";
                         }
+						
                     @endphp
                     <td class="flex flex-row text-sm font-bold text-left">
                         <img src="{{$CreatedByUserImage}}"  class="rounded-full task-user-image mt-2"></img>
@@ -197,12 +198,26 @@
                         {
                             $PersonUserImage = asset('images')."/default.png";
                         }
+						$Created_At = date("d-m-Y H:i A",strtotime($leave->created_at));
+						$Updated_At = date("d-m-Y H:i A",strtotime($leave->updated_at));
                     @endphp
                     <td class="flex flex-row text-sm font-bold text-left">
                         <img src="{{$PersonUserImage}}"  class="rounded-full task-user-image mt-2"></img>
-                        <span class="text-sm font-semibold p-2 self-center ml-2">{{$leave->person_name->name}}</span>
+                        <span class="text-sm font-semibold p-2 self-center ml-2">
+							{{$leave->person_name->name}}
+							<br>
+							<span class="text-neutral-400">
+								{{$Created_At}}
+							</span>
+						</span>
                     </td>
-                    <td class="text-sm font-semibold p-2 text-left">{{ $StatusArray[$leave->status] }}</td>
+                    <td class="text-sm font-semibold p-2 text-left">
+						{{ $StatusArray[$leave->status] }}
+						<br>
+						<span class="text-neutral-400">
+							{{$Updated_At}}
+						</span>
+					</td>
 
                     <td class="text-sm font-semibold p-2 text-left">
                         <div class="dropdown_container" tabindex="-1">
@@ -233,6 +248,9 @@
                     </td>  
                 </tr>
               @endforeach
+			  	<div class="pt-5 pl-5 pr-5">
+                  	{{$leaves->links()}}
+            	</div>
           </tbody>
         </table>
       </div>

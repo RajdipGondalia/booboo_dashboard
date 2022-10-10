@@ -104,8 +104,8 @@
           <tbody>
             @php
               $count = 0
-              
-              
+            
+            
             @endphp
             @if($view_mode=="all_users")
               @foreach($time_trackers as $time_tracker)
@@ -140,7 +140,11 @@
                     <span class="text-sm font-bold py-2 self-center ml-2">{{$time_tracker->user_name->name}}</span>
                   </td>
                 </tr>
+                
               @endforeach
+              <div class="pt-5 pl-5 pr-5">
+                {{$time_trackers->links()}}
+              </div>
             @elseif($view_mode=="filter_user")
               @foreach($datewise_time_trackers as $datewise_time_tracker)
                 @php
@@ -198,7 +202,7 @@
                         <span  class="text-neutral-400 p-1 font-semibold text-sm ">{{$d_TimeDiff}}</span>
                         <br>
                       @else
-                        <span></span>
+                        
                     @endif
                   @endforeach
                   </td>
