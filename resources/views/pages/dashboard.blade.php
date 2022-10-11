@@ -355,6 +355,97 @@
                 </div>
             @endif
         </div>
+        <div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10  xl:gap-10 sm:mx-0 xl:mx-0 -mb-40 mt-10">
+            <div class="p-4 md:p-4 text-center flex flex-col bg-white h-3/4 rounded-2xl ">
+                <span class="text-2xl text-center text-md font-bold text-neutral-700">Holidays</span>
+                @if((Auth::user()->type==1 || Auth::user()->type==2 ))
+                    <span class="text-right" >
+                        <a href="{{ route('create_holiday') }}" class="text-white rounded-3xl bg-red-600 text-md font-normal px-4 py-2 rounded-lg">Add Holiday <i class="fa fa-plus"></i></a>
+                    </span>
+                @endif
+                <div class="container px-0 mx-auto flex flex-col xl:flex align overflow-y-auto h-full">
+                    <div class="fix-width text-left overflow-y-auto h-full">
+                        <table class="table  project-list-table table-responsive" style="float: left;height: 500px;overflow-x: hidden;overflow-y: auto; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th class="text-neutral-400 p-4 font-semibold text-xs text-center w-1/12">Sr.No.</th>
+                                    <th class="text-neutral-400 p-4 font-semibold text-xs text-center w-4/12">Title</th>
+                                    <th class="text-neutral-400 p-4 font-semibold text-xs text-center w-2/12">Start Date</th>
+                                    <th class="text-neutral-400 p-4 font-semibold text-xs text-center w-2/12">End Date</th>
+                                    <th class="text-neutral-400 p-4 font-semibold text-xs text-center w-2/12">Days</th>
+                                    <th class="text-neutral-400 p-4 font-semibold text-xs text-center w-1/12"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $count = 0;
+                                @endphp
+                                @foreach($holidays as $holiday)
+                                    @php
+                                        if($holiday->start_date!="" && $holiday->start_date!="NULL" && $holiday->start_date!="0000-00-00"  && $holiday->start_date!="1970-01-01")
+                                        {
+                                            $StartDate = date("d-m-Y",strtotime($holiday->start_date));
+                                        }
+                                        else
+                                        {
+                                            $StartDate = "-";
+                                        }
+                                        if($holiday->end_date!="" && $holiday->end_date!="NULL" && $holiday->end_date!="0000-00-00"  && $holiday->end_date!="1970-01-01")
+                                        {
+                                            $EndDate = date("d-m-Y",strtotime($holiday->end_date));
+                                        }
+                                        else
+                                        {
+                                            $EndDate = "-";
+                                        }
+                                        if($holiday->day == 1)
+                                        {
+                                            $Day = $holiday->day." Day";
+                                        }
+                                        else
+                                        {
+                                            $Day = $holiday->day." Days";
+                                        }
+                                    @endphp
+                                    
+                                    <tr class="bg-white align-top">
+                                        <td class="text-sm font-semibold p-2 text-center ">{{++$count}}</td>
+                                        <td class="text-sm font-semibold p-2 text-center">
+                                            <span>{{$holiday->name}}</span><br />
+                                            <span class="text-xs font-normal text-400">{{$holiday->description}}</span>
+                                        </td>
+                                        <td class="text-sm font-semibold p-2 text-center">
+                                            
+                                            {{ $StartDate }} 
+                                        </td>
+                                        <td class="text-sm font-semibold p-2 text-center">
+                                            {{ $EndDate }} 
+                                        </td>
+                                        <td class="text-sm font-semibold p-2 text-center">
+                                            {{ $Day }} 
+                                        </td>
+                                        @if((Auth::user()->type==1 || Auth::user()->type==2 ))
+                                        <td class="text-sm font-semibold p-2 text-left">
+                                            <div class="dropdown_container" tabindex="-1">
+                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                <div class="dropdown">
+                                                    <a href="{{ route('edit_holiday', $holiday->id) }}" class="grid_dropdown_item edit_button" >
+                                                        <div><i class="fa fa-edit"></i> Edit</div>
+                                                    </a>
+                                                    <a onclick="return confirm('Are you sure Delete This Holiday..?')"  href="{{ route('delete_holiday', $holiday->id) }}" class="grid_dropdown_item delete_button"  title="Delete"  >
+                                                        <div><i class="fa fa-trash-o"> Delete</i></div>
+                                                    </a> 
+                                            </div>
+                                        </td>  
+                                        @endif
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     <script>
         function leave_approve(id)

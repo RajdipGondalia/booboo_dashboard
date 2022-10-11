@@ -198,8 +198,8 @@
                         {
                             $PersonUserImage = asset('images')."/default.png";
                         }
-						$Created_At = date("d-m-Y H:i A",strtotime($leave->created_at));
-						$Updated_At = date("d-m-Y H:i A",strtotime($leave->updated_at));
+						$Created_At = date("d-m-Y h:i A",strtotime($leave->created_at));
+						$Updated_At = date("d-m-Y h:i A",strtotime($leave->updated_at));
                     @endphp
                     <td class="flex flex-row text-sm font-bold text-left">
                         <img src="{{$PersonUserImage}}"  class="rounded-full task-user-image mt-2"></img>

@@ -13,6 +13,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\HolidayController;
 
 
 /*
@@ -110,6 +111,12 @@ Route::group(['middleware'=>'auth','prefix' =>'dashboard'], function () {
     Route::get('edit-client/{id}',[ClientController::class,'edit_client'])->name('edit_client');
     Route::get('delete-client/{id}',[ClientController::class,'delete_client'])->name('delete_client');
     Route::post('store-client-data',[ClientController::class,'store_client_data'])->name('store_client_data');
+
+    //Holiday Routes
+    Route::get('create-holiday',[HolidayController::class,'create_holiday'])->name('create_holiday');
+    Route::post('store-holiday-data',[HolidayController::class,'store_holiday_data'])->name('store_holiday_data');
+    Route::get('edit-holiday/{id}',[HolidayController::class,'edit_holiday'])->name('edit_holiday');
+    Route::get('delete-holiday/{id}',[HolidayController::class,'delete_holiday'])->name('delete_holiday');
 
     //Project Routes
     Route::get('create-project',[ProjectController::class,'create_project'])->name('create_project');

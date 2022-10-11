@@ -13,6 +13,7 @@ use App\Models\ClientMaster;
 use App\Models\ClientCategoryMaster;
 use App\Models\JobRoleMaster;
 use App\Models\leave;
+use App\Models\Holiday;
 use DB;
 
 
@@ -36,6 +37,7 @@ class ViewController extends Controller
 
         $approve_leaves = leave::where('isDelete', '=', 0)->where('status', '=', 1)->whereDate('created_at', '>=', $show_start_date)->whereDate('created_at', '<=', $show_end_date)->orderBy('leave_date_1',"DESC")->get();
         $pending_leaves = leave::where('isDelete', '=', 0)->where('status', '=', 0)->orderBy('id',"DESC")->get();
+        $holidays = Holiday::where('isDelete', '=', 0)->orderBy('start_date',"DESC")->get();
         // $approve_leaves = \DB::getQueryLog();
         // dd($approve_leaves);
 
@@ -45,8 +47,7 @@ class ViewController extends Controller
         $count['pending_tasks_count'] = $pending_tasks_count;
         $count['total_projects_count'] = $total_projects_count;
         
-
-        return view('pages.dashboard')->with(['count'=>$count,'current_user'=>$current_user,'approve_leaves'=>$approve_leaves,'pending_leaves'=>$pending_leaves]);
+        return view('pages.dashboard')->with(['count'=>$count,'current_user'=>$current_user,'approve_leaves'=>$approve_leaves,'pending_leaves'=>$pending_leaves,'holidays'=>$holidays]);
     }
 
     public function view_all_employees(){
