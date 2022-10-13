@@ -56,7 +56,7 @@
     </section>
     @endif
     <section class="lg:ml-60 md:ml-60 sm:ml-60 market-background relative pt-6">
-        <div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10 xl:grid xl:grid-cols-2 xl:gap-10 sm:mx-0 xl:mx-0 -mb-40">
+        <div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10 xl:grid xl:grid-cols-2 xl:gap-10 sm:mx-0 xl:mx-0 -mb-32">
             <div class="p-4 md:p-4 text-center flex flex-col bg-white h-3/4 rounded-2xl ">
                 <span class="text-2xl text-center text-md font-bold text-neutral-700">Leave</span>
                 <div class="container px-0 mx-auto flex flex-col xl:flex align overflow-y-auto h-full">
@@ -296,7 +296,7 @@
             </div>
         </div>
         <!-- <div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10    sm:mx-0 xl:mx-0 -mb-40 mt-10 "> -->
-        <div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10 xl:grid xl:grid-cols-2 xl:gap-10 sm:mx-0 xl:mx-0 -mb-40">
+        <div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10 xl:grid xl:grid-cols-2 xl:gap-10 sm:mx-0 xl:mx-0 -mb-32">
             @if((Auth::user()->type==1 || Auth::user()->type==2 ))
                 <div class="p-4 md:p-4 text-center flex flex-col bg-white h-3/4 rounded-2xl ">
                     <span class="text-2xl text-center text-md font-bold text-neutral-700 ">Pending Leave Request</span>
@@ -524,7 +524,7 @@
                                                 }
                                                 $Created_At = date("d-m-Y h:i A",strtotime($important_note->created_at));
                                             @endphp
-                                            <td class="flex flex-row text-sm font-bold text-left">
+                                            <td class="flex flex-row text-sm font-bold text-center">
                                                 <img src="{{$PersonUserImage}}"  class="rounded-full task-user-image mt-2"></img>
                                                 <span class="text-sm font-semibold p-2 self-center ml-2">
                                                     {{$important_note->user_name->name}}
@@ -535,7 +535,7 @@
                                                 </span>
                                             </td>
                                             @if((Auth::user()->type==1 || Auth::user()->type==2 ))
-                                            <td class="text-sm font-semibold p-2 text-left">
+                                            <td class="text-sm font-semibold p-2 text-center">
                                                 <div class="dropdown_container" tabindex="-1">
                                                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                     <div class="dropdown">
