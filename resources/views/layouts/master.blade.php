@@ -22,6 +22,46 @@
     <script src="resources/js/app.js" ></script> -->
     <!-- Fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .blink-button {
+            background-color: #004A7F;
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            border: none;
+            color: #FFFFFF;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            -webkit-animation: glowing 1500ms infinite;
+            -moz-animation: glowing 1500ms infinite;
+            -o-animation: glowing 1500ms infinite;
+            animation: glowing 1500ms infinite;
+            }
+            @-webkit-keyframes glowing {
+            0% { background-color: #B20000; -webkit-box-shadow: 0 0 3px #B20000; }
+            50% { background-color: #FF0000; -webkit-box-shadow: 0 0 40px #FF0000; }
+            100% { background-color: #B20000; -webkit-box-shadow: 0 0 3px #B20000; }
+            }
+
+            @-moz-keyframes glowing {
+            0% { background-color: #B20000; -moz-box-shadow: 0 0 3px #B20000; }
+            50% { background-color: #FF0000; -moz-box-shadow: 0 0 40px #FF0000; }
+            100% { background-color: #B20000; -moz-box-shadow: 0 0 3px #B20000; }
+            }
+
+            @-o-keyframes glowing {
+            0% { background-color: #B20000; box-shadow: 0 0 3px #B20000; }
+            50% { background-color: #FF0000; box-shadow: 0 0 40px #FF0000; }
+            100% { background-color: #B20000; box-shadow: 0 0 3px #B20000; }
+            }
+
+            @keyframes glowing {
+            0% { background-color: #B20000; box-shadow: 0 0 3px #B20000; }
+            50% { background-color: #FF0000; box-shadow: 0 0 40px #FF0000; }
+            100% { background-color: #B20000; box-shadow: 0 0 3px #B20000; }
+        }
+    </style>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js" integrity="sha512-xIPqqrfvUAc/Cspuj7Bq0UtHNo/5qkdyngx6Vwt+tmbvTLDszzXM0G6c91LXmGrRx8KEPulT+AfOOez+TeVylg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

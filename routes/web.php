@@ -14,6 +14,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\ImportantNoteController;
 
 
 /*
@@ -117,6 +118,14 @@ Route::group(['middleware'=>'auth','prefix' =>'dashboard'], function () {
     Route::post('store-holiday-data',[HolidayController::class,'store_holiday_data'])->name('store_holiday_data');
     Route::get('edit-holiday/{id}',[HolidayController::class,'edit_holiday'])->name('edit_holiday');
     Route::get('delete-holiday/{id}',[HolidayController::class,'delete_holiday'])->name('delete_holiday');
+
+    //Important Notes Routes
+    Route::get('create-important-note',[ImportantnoteController::class,'create_important_note'])->name('create_important_note');
+    Route::post('store-important-note-data',[ImportantnoteController::class,'store_important_note_data'])->name('store_important_note_data');
+    Route::get('edit-important-note/{id}',[ImportantnoteController::class,'edit_important_note'])->name('edit_important_note');
+    Route::get('delete-important-note/{id}',[ImportantnoteController::class,'delete_important_note'])->name('delete_important_note');
+    Route::get('active-important-note/{id}',[ImportantnoteController::class,'active_important_note'])->name('active_important_note');
+    Route::get('deactive-important-note/{id}',[ImportantnoteController::class,'deactive_important_note'])->name('deactive_important_note');
 
     //Project Routes
     Route::get('create-project',[ProjectController::class,'create_project'])->name('create_project');
