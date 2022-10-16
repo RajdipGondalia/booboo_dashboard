@@ -12,7 +12,9 @@
             id="sidenavExample">
             <div class="pt-4 pb-16 lg:pl-10 md:pl-5 w-full my-4">
                 <span class="text-md font-bold text-2xl float-left mx-2 md:mx-0">
-                    <img src="{{ asset('theme/images/booboo-icon.png') }}" href="{{ route('dashboard') }}" height="100" width="100" class="mr-2" alt="">
+                    <a href="{{ route('dashboard') }}">
+                        <img src="{{ asset('theme/images/booboo-icon.png') }}"  height="100" width="100" class="mr-2" alt="">
+                    </a>
                 </span>
                 <div class="block text-3xl relative cursor-pointer md:hidden">
                     <button type="button" class="menu-icon flex flex-col float-right right-8 top-6 mx-2 md:mx-0">

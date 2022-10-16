@@ -23,7 +23,7 @@
 
     <section class="lg:ml-60 md:ml-60 sm:ml-60 mt-10 relative">
         <div class="flex flex-col xl:flex xl:flex-col xl:justify-between grid grid-cols-1 xl:pl-10 md:pl-10 sm:pl-10 pl-0 xl:px-10 md:px-10 sm:px-10 px-0 sm:grid sm:grid-cols-1 sm:gap-5 md:grid md:grid-cols-2 md:gap-10 xl:grid xl:grid-cols-2 xl:gap-10 sm:mx-0 xl:mx-0 -mb-40" style="min-height: 860px;">
-            <div class="p-1 md:p-1 text-center  bg-white  rounded-2xl">
+            <div class="p-1 md:p-1 text-center flex flex-col bg-white h-4/5 rounded-2xl">
                 <span class="text-center text-md font-bold">Calender</span>
                 <div id="calendar"></div>
             </div>

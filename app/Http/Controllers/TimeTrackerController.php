@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\TimeTracker;
 use App\Models\User;
 use DB;
+use Carbon\Carbon;
+use DateTime;
 
 
 class TimeTrackerController extends Controller
@@ -30,9 +32,49 @@ class TimeTrackerController extends Controller
         //$date="date(Y-m-d h:i:s)";
         //dd($request->all());
         // dd($request->img[0]);
+        // $current = Carbon::now()->format('Y-m-d h:i:s');
+        // $current = Carbon::now()->timezone('Asia/Kolkata')->format('Y-m-d h:i:s');
+        //$current = new Carbon('YYYY-MM-DD HH:II:SS', 'Asia/Kolkata');
+        // $current = Carbon::now('Asia/Kolkata')->format('Y-m-d h:i:s');
+	    // $current = current('d-m-Y H:i:s');
+        
+        // $tz = new DateTimeZone('Asia/Kolkata');
+        // $dt->setTimezone($tz);
+        // $current = $dt->format('Y-m-d H:i:s');
+        // $date = date_default_timezone_set('Asia/Kolkata');
+        // $current = date("Y-m-d H:i:s");
+
+        // date_default_timezone_set('Asia/Kolkata');
+        // $current = date( 'Y-m-d h:i:s', time () );
+
+        // $date =new DateTime;
+        // $current = date('Y-m-d h:i:s', strtotime($date));
+
+        // date_default_timezone_set('Asia/Kolkata');
+        // $current = Carbon::now()->format('Y-m-d h:i:s');
+        
+        // date_default_timezone_set('Asia/Kolkata');
+        // $script_tz = date_default_timezone_get();
+        // dd($script_tz);
+
+        // $epoch = time();
+        // microtime(true);
+        // $dt = new DateTime("@$epoch");
+        // $current = $dt->format('Y-m-d H:i:s');
+        // dd($current);
+
+        // $current = Carbon::now()->timezone('UTC')->format('Y-m-d h:i:s');
+        // $current = Carbon::now()->timezone('UTC +5:30')->format('Y-m-d h:i:s');
+        // $time_start->current_time = $request->start_time;
+
+        // date_default_timezone_set('Asia/Calcutta');
+        // $current = date('Y-m-d H:i:s');
+
+
         $time_start = new TimeTracker;
         $time_start->flag = 'start';
         $time_start->user_id = $request->user_id;
+        // $time_start->current_time = $current;
         $time_start->current_time = $request->start_time;
         
         $time_start->save();
